@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>TechSarge | Professional Repair Ecosystem</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="js/tailwind-config.js"></script>
+
+  <!-- Markdown renderer -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Project styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <style>
+    /* ══════════════════════════════════════════════════════════
+       Floating Chat — MR Sergeant  (styles)
+    ══════════════════════════════════════════════════════════ */
+
+    /* ── Panel ─────────────────────────────────────────────── */
+    #ts-chat-panel {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 50;
+      width: 340px;
+      max-width: calc(100vw - 32px);
+      height: min(560px, calc(100vh - 40px));
+      display: flex;
+      flex-direction: column;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(6, 182, 212, 0.30);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85);
+      background: rgba(13, 13, 13, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: height 0.25s ease;
+    }
+    #ts-chat-panel[data-state="minimized"] { height: auto; }
+    #ts-chat-panel[data-state="docked"]    { display: none; }
+
+    /* ── Header ────────────────────────────────────────────── */
+    #ts-chat-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 16px;
+      background: #22d3ee;
+      color: #0a0a0a;
+    }
+    .ts-chat-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      overflow: hidden; background: #000;
+      flex-shrink: 0;
+    }
+    .ts-chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .ts-chat-name { flex: 1; min-width: 0; }
+    .ts-chat-name h4 {
+      margin: 0; font-size: 13px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.04em; line-height: 1;
+    }
+    .ts-chat-name span {
+      font-size: 9px; font-weight: 700;
+      text-transform: uppercase; opacity: 0.75;
+    }
+    .ts-chat-controls { display: flex; gap: 8px; flex-shrink: 0; }
+    .ts-chat-controls button {
+      background: transparent; border: none; cursor: pointer;
+      color: #0a0a0a; opacity: 0.85;
+      display: flex; align-items: center; padding: 0;
+      transition: opacity 0.15s;
+    }
+    .ts-chat-controls button:hover { opacity: 1; }
+
+    /* ── API Key Setup ─────────────────────────────────────── */
+    #ts-chat-apikey-setup {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 24px 20px;
+      background: rgba(0,0,0,0.5);
+    }
+    #ts-chat-apikey-setup p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #a1a1aa;
+      text-align: center;
+      line-height: 1.6;
+      margin: 0;
+    }
+    #ts-chat-apikey-setup strong { color: #22d3ee; }
+    #ts-chat-apikey-input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(6,182,212,0.3);
+      border-radius: 6px;
+      color: #e4e4e7;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 9px 12px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    #ts-chat-apikey-input:focus { border-color: #22d3ee; }
+    #ts-chat-apikey-input::placeholder { color: #52525b; }
+    #ts-chat-apikey-btn {
+      width: 100%;
+      padding: 9px 0;
+      background: #22d3ee;
+      border: none;
+      border-radius: 6px;
+      color: #0a0a0a;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    #ts-chat-apikey-btn:hover { background: #67e8f9; }
+    #ts-chat-apikey-err {
+      color: #f87171;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      display: none;
+    }
+
+    /* ── Messages ──────────────────────────────────────────── */
+    #ts-chat-messages {
+      flex: 1;
+      padding: 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: rgba(0,0,0,0.35);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+    #ts-chat-panel[data-state="minimized"] #ts-chat-messages,
+    #ts-chat-panel[data-state="minimized"] #ts-chat-footer,
+    #ts-chat-panel[data-state="minimized"] #ts-chat-apikey-setup { display: none; }
+
+    /* AI bubble */
+    .ts-msg-ai { display: flex; gap: 8px; align-items: flex-start; }
+    .ts-msg-ai-ava {
+      width: 24px; height: 24px;
+      border-radius: 50%; overflow: hidden;
+      background: #164e63; flex-shrink: 0;
+    }
+    .ts-msg-ai-ava img { width: 100%; height: 100%; object-fit: cover; }
+    .ts-msg-ai-bubble {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-left: 3px solid rgba(6,182,212,0.6);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #e4e4e7;
+      line-height: 1.55;
+    }
+    /* Markdown inside AI bubble */
+    .ts-msg-ai-bubble p  { margin: 0 0 6px; }
+    .ts-msg-ai-bubble p:last-child { margin-bottom: 0; }
+    .ts-msg-ai-bubble strong { color: #22d3ee; font-weight: 700; }
+    .ts-msg-ai-bubble ul, .ts-msg-ai-bubble ol { margin: 6px 0 6px 16px; }
+    .ts-msg-ai-bubble li { margin-bottom: 3px; }
+    .ts-msg-ai-bubble hr { border-color: rgba(255,255,255,0.1); margin: 8px 0; }
+    .ts-msg-ai-bubble code {
+      background: rgba(0,0,0,0.4);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .ts-msg-ai-meta {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 8px;
+      color: #52525b;
+    }
+    .ts-msg-ai-meta .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #22d3ee;
+      animation: pulse 2s infinite;
+    }
+
+    /* User bubble */
+    .ts-msg-user { display: flex; justify-content: flex-end; }
+    .ts-msg-user-bubble {
+      background: rgba(6,182,212,0.10);
+      border: 1px solid rgba(6,182,212,0.30);
+      border-right: 3px solid rgba(6,182,212,0.6);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #22d3ee;
+      line-height: 1.55;
+      max-width: 80%;
+    }
+    .ts-msg-user-meta {
+      display: flex; justify-content: flex-end;
+      font-size: 8px; color: #52525b;
+      margin-top: 4px; margin-right: 4px;
+    }
+
+    /* Attached image in message */
+    .ts-msg-img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Loading indicator */
+    #ts-chat-loading {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-left: 3px solid rgba(6,182,212,0.4);
+      border-radius: 8px;
+    }
+    .ts-loading-dots { display: flex; gap: 4px; }
+    .ts-loading-dots span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #22d3ee;
+      animation: ts-bounce 1s infinite;
+    }
+    .ts-loading-dots span:nth-child(2) { animation-delay: -0.15s; }
+    .ts-loading-dots span:nth-child(3) { animation-delay: -0.30s; }
+    .ts-loading-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: #22d3ee;
+    }
+    @keyframes ts-bounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+      40%            { transform: scale(1.0); opacity: 1.0; }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
+    }
+
+    /* ── Footer ────────────────────────────────────────────── */
+    #ts-chat-footer {
+      flex-shrink: 0;
+      background: #0d0d0d;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Quick actions */
+    #ts-chat-quick {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      padding: 10px 12px 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    #ts-chat-quick button {
+      padding: 3px 9px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      font-style: italic;
+      color: #a1a1aa;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    #ts-chat-quick button:hover {
+      background: rgba(6,182,212,0.15);
+      border-color: rgba(6,182,212,0.4);
+      color: #67e8f9;
+    }
+    #ts-chat-quick button:disabled { opacity: 0.3; pointer-events: none; }
+
+    /* Image preview */
+    #ts-chat-img-preview {
+      display: none;
+      position: relative;
+      padding: 8px 12px 0;
+    }
+    #ts-chat-img-preview img {
+      width: 56px; height: 56px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid rgba(6,182,212,0.3);
+    }
+    #ts-chat-img-remove {
+      position: absolute;
+      top: 4px; left: 52px;
+      background: #ef4444;
+      border: none; border-radius: 50%;
+      width: 16px; height: 16px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #ts-chat-img-remove span { font-size: 10px; color: #fff; line-height: 1; }
+
+    /* Input row */
+    #ts-chat-input-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      padding: 10px 12px;
+    }
+    #ts-chat-upload-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px;
+      padding: 8px;
+      cursor: pointer;
+      color: #71717a;
+      display: flex;
+      align-items: center;
+      transition: color 0.15s, background 0.15s;
+      flex-shrink: 0;
+    }
+    #ts-chat-upload-btn:hover { color: #22d3ee; background: rgba(6,182,212,0.08); }
+    #ts-chat-input-wrap { flex: 1; position: relative; }
+    #ts-chat-input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(6,182,212,0.2);
+      border-radius: 8px;
+      color: #e4e4e7;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 8px 36px 8px 10px;
+      outline: none;
+      resize: none;
+      min-height: 38px;
+      max-height: 100px;
+      line-height: 1.4;
+      transition: border-color 0.15s;
+      overflow-y: auto;
+    }
+    #ts-chat-input:focus   { border-color: #22d3ee; }
+    #ts-chat-input::placeholder { color: #52525b; }
+    #ts-chat-input:disabled { opacity: 0.5; cursor: not-allowed; }
+    #ts-chat-send-btn {
+      position: absolute; right: 8px; bottom: 8px;
+      background: #22d3ee;
+      border: none; border-radius: 6px;
+      width: 24px; height: 24px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    #ts-chat-send-btn:hover    { background: #67e8f9; }
+    #ts-chat-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Status strip */
+    #ts-chat-status-strip {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 12px 8px;
+    }
+    .ts-status-dot-grp { display: flex; align-items: center; gap: 4px; }
+    .ts-status-dot { width: 5px; height: 5px; border-radius: 50%; }
+    .ts-status-dot.green { background: #22c55e; animation: pulse 2s infinite; }
+    .ts-status-dot.grey  { background: #52525b; }
+    .ts-status-lbl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px; color: #52525b; text-transform: uppercase;
+    }
+
+    /* ── Docked tab ────────────────────────────────────────── */
+    #ts-chat-dock {
+      position: fixed;
+      bottom: 0; right: 24px;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 16px;
+      background: #22d3ee;
+      color: #0a0a0a;
+      border-radius: 12px 12px 0 0;
+      cursor: pointer;
+      box-shadow: 0 -4px 24px rgba(0,220,255,0.22);
+      transition: background 0.15s, transform 0.15s;
+    }
+    #ts-chat-dock:hover { background: #67e8f9; transform: translateY(-2px); }
+    #ts-chat-dock .dock-ava {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 2px solid rgba(0,0,0,0.18);
+      overflow: hidden; background: #000; flex-shrink: 0;
+    }
+    #ts-chat-dock .dock-ava img { width: 100%; height: 100%; object-fit: cover; }
+    #ts-chat-dock .dock-label { line-height: 1; }
+    #ts-chat-dock .dock-label p {
+      margin: 0; font-size: 11px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    #ts-chat-dock .dock-label span {
+      font-size: 9px; font-weight: 700;
+      text-transform: uppercase; opacity: 0.65;
+    }
+
+    @media (max-width: 420px) {
+      #ts-chat-panel {
+        right: 12px;
+        bottom: 12px;
+        width: calc(100vw - 24px);
+        max-width: calc(100vw - 24px);
+        height: min(520px, calc(100vh - 32px));
+      }
+      #ts-chat-dock {
+        right: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body class="text-zinc-100 bg-[#0f0f11] min-h-screen" style="font-family:'Inter',system-ui,sans-serif">
+
+  <!-- ══ Top Nav ══════════════════════════════════════════════════ -->
+  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 md:px-8 h-16 bg-[#0f0f11]/90 backdrop-blur-xl border-b border-white/8">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <div class="relative flex items-center justify-center w-9 h-9 bg-white/5 rounded-lg border border-white/10">
+        <span class="text-xl font-black tracking-tighter monogram-t">T</span>
+        <span class="text-xl font-black tracking-tighter monogram-s" style="margin-left:-3px">S<div class="monogram-glow"></div></span>
+      </div>
+      <span class="text-lg font-extrabold tracking-tight">
+        <span class="text-white">Tech</span><span class="text-cyan-400">Sargeant</span>
+      </span>
+    </a>
+    <nav class="hidden md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:flex items-center gap-6">
+      <a data-nav="home"       data-nav-style="top" href="index.html"      class="ts-topnav-link">Home</a>
+      <a data-nav="ai"         data-nav-style="top" href="ai.html"         class="ts-topnav-link">AI Diagnostics</a>
+      <a data-nav="videos"     data-nav-style="top" href="videos.html"     class="ts-topnav-link">Video Tutorials</a>
+      <a data-nav="osdownload" data-nav-style="top" href="osdownload.html" class="ts-topnav-link">OS Center</a>
+      <a data-nav="repair"     data-nav-style="top" href="repair.html"     class="ts-topnav-link">Repair Store</a>
+    </nav>
+    <button id="ts-menu-toggle" class="ts-menu-toggle" title="Menu">
+      <span class="material-symbols-outlined" style="font-size:20px">menu</span>
+    </button>
+  </header>
+
+  <!-- ══ Admin Login Modal ════════════════════════════════════════ -->
+  <div id="ts-login-backdrop" class="ts-modal-backdrop" style="z-index:200">
+    <div class="ts-login-card" style="position:relative">
+      <button onclick="document.getElementById('ts-login-backdrop').classList.remove('show')"
+              style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:#71717a;cursor:pointer">
+        <span class="material-symbols-outlined" style="font-size:20px">close</span>
+      </button>
+      <h3>Admin Access</h3>
+      <p>This area is restricted to TechSarge administrators only.</p>
+      <label for="ts-login-user">Username / Email</label>
+      <input type="text" id="ts-login-user" placeholder="Enter username or email" autocomplete="username" />
+      <label for="ts-login-pw" style="margin-top:12px">Password</label>
+      <input type="password" id="ts-login-pw" placeholder="Enter admin password" autocomplete="current-password" />
+      <p id="ts-login-err" class="ts-login-error">Incorrect credentials. Please try again.</p>
+      <button id="ts-login-submit-btn">Authenticate</button>
+      <p class="ts-login-hint">Default: admin / techsarge2026</p>
+    </div>
+  </div>
+
+  <!-- ══ Main Content ══════════════════════════════════════════════ -->
+  <main class="ts-main px-4 md:px-8 pb-16">
+
+    <!-- Hero -->
+    <section class="relative mb-10 rounded-2xl overflow-hidden glass-panel border border-white/8 p-6 md:p-12">
+      <div class="hero-bg">
+        <img src="public/01.gif" alt="Animated Tech Background" class="hero-bg-gif" />
+        <div class="hero-bg-overlay"></div>
+      </div>
+      <div class="relative z-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-400/8 border border-cyan-400/20 mb-6">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span class="text-cyan-400 text-xs font-bold uppercase tracking-widest">SYSTEM STATUS: OPERATIONAL</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-5 leading-tight tracking-tight">
+          The Expert Interface for<br /><span class="text-cyan-400">Next-Gen Repair.</span>
+        </h1>
+        <p class="text-zinc-300 text-base mb-8 max-w-xl leading-relaxed">
+          Access high-level diagnostics, firmware repositories, and expert-led repair flows through a unified terminal designed for hardware precision.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="ai.html" class="px-7 py-3.5 bg-cyan-400 text-zinc-950 font-bold rounded-xl text-sm hover:bg-cyan-300 transition-colors flex items-center gap-2 shadow-[0_0_20px_rgba(0,251,251,0.25)]">
+            Initialize Diagnostic
+            <span class="material-symbols-outlined" style="font-size:18px">rocket_launch</span>
+          </a>
+          <a href="videos.html" class="px-7 py-3.5 border border-cyan-400/50 text-cyan-400 font-bold rounded-xl text-sm hover:bg-cyan-400/8 transition-colors flex items-center gap-2">
+            Video Library
+            <span class="material-symbols-outlined" style="font-size:18px">play_circle</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bento Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+      <!-- AI Diagnostics -->
+      <a href="ai.html" class="glass-panel p-7 rounded-2xl border border-white/8 group hover:border-cyan-400/40 transition-all duration-300 block">
+        <div class="w-11 h-11 rounded-xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center mb-5 text-cyan-400 group-hover:shadow-[0_0_16px_rgba(0,251,251,0.35)] transition-all">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">psychology</span>
+        </div>
+        <h3 class="font-bold text-lg text-white mb-2">AI Diagnostics</h3>
+        <p class="text-zinc-500 text-sm mb-5 leading-relaxed">Real-time error code parsing and heuristic repair suggestions powered by SargeCore AI.</p>
+        <div class="bg-black/40 rounded-lg p-3 font-mono text-[10px] text-cyan-400 mb-5 border border-white/6">
+          <p>&gt; initializing_neural_link...</p>
+          <p>&gt; analysis_complete: status_nominal</p>
+          <p>&gt; sarge_ready<span class="terminal-cursor"></span></p>
+        </div>
+        <span class="text-cyan-400 font-bold text-xs flex items-center gap-2 group-hover:translate-x-1.5 transition-transform uppercase tracking-widest">
+          Launch Terminal <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
+        </span>
+      </a>
+
+      <!-- Video Tutorials -->
+      <a href="videos.html" class="glass-panel p-7 rounded-2xl border border-white/8 group hover:border-amber-400/40 transition-all duration-300 block">
+        <div class="w-11 h-11 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center mb-5 text-amber-400 group-hover:shadow-[0_0_16px_rgba(255,191,0,0.35)] transition-all">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">play_circle</span>
+        </div>
+        <h3 class="font-bold text-lg text-white mb-2">Video Tutorials</h3>
+        <p class="text-zinc-500 text-sm mb-5 leading-relaxed">4K macro-photography teardowns and micro-soldering masterclasses from elite technicians.</p>
+        <div class="relative rounded-xl overflow-hidden mb-5 aspect-video">
+          <img alt="Soldering Tutorial"
+               class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+               src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1UE_2Tjnw8KTuk-_4Ns6K6f-Ovf4o5iDXsa48ZmHc3PzZKFV3hO84KoRCTilQk6UNEXpn8QIYYMV_GxfkA7-ublPLeCwu3rjBsOFbQuYzLslcmbc-jiMjqe_z-D6rmQSMJjVOo1VyKet4f0xS2CPNoUFgFZKzjv7GrgFza2nJaOv7cVNMA2530_aFqnv3fI6nrSYM4vK-etX57I_aY5Euior7HS716f73QD8ZJ2BAxEwZTVzlz9PM2wi8dbLZt2uvh4qP5JoxQJw" />
+          <div class="absolute inset-0 flex items-center justify-center bg-black/35">
+            <span class="material-symbols-outlined text-white" style="font-size:36px">play_arrow</span>
+          </div>
+        </div>
+        <span class="text-amber-400 font-bold text-xs flex items-center gap-2 group-hover:translate-x-1.5 transition-transform uppercase tracking-widest">
+          Browse Academy <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
+        </span>
+      </a>
+
+      <!-- OS Download Center -->
+      <a href="osdownload.html" class="glass-panel p-7 rounded-2xl border border-white/8 group hover:border-indigo-400/40 transition-all duration-300 block">
+        <div class="w-11 h-11 rounded-xl bg-indigo-400/10 border border-indigo-400/20 flex items-center justify-center mb-5 text-indigo-400 group-hover:shadow-[0_0_16px_rgba(129,140,248,0.35)] transition-all">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">terminal</span>
+        </div>
+        <h3 class="font-bold text-lg text-white mb-2">OS Download Center</h3>
+        <p class="text-zinc-500 text-sm mb-5 leading-relaxed">Encrypted repository for customized recovery images, original firmware, and OS flashing tools.</p>
+        <div class="space-y-2 mb-5">
+          <div class="flex items-center justify-between p-2 bg-white/4 rounded-lg border border-white/6">
+            <span class="text-xs text-zinc-300 font-mono">SargeOS_v4.2.iso</span>
+            <span class="text-[10px] text-cyan-400 font-bold">STABLE</span>
+          </div>
+          <div class="flex items-center justify-between p-2 bg-white/4 rounded-lg border border-white/6 opacity-50">
+            <span class="text-xs text-zinc-300 font-mono">Dev_Kernel_6.x</span>
+            <span class="text-[10px] text-amber-400 font-bold">BETA</span>
+          </div>
+        </div>
+        <span class="text-indigo-400 font-bold text-xs flex items-center gap-2 group-hover:translate-x-1.5 transition-transform uppercase tracking-widest">
+          Open Repository <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
+        </span>
+      </a>
+    </div>
+
+    <!-- Fleet Health -->
+    <section class="mt-6 glass-panel rounded-2xl border border-white/8 p-6 md:p-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+        <div>
+          <h2 class="text-xl font-bold text-white tracking-tight">Global Fleet Health</h2>
+          <p class="text-zinc-500 text-sm mt-1" id="ts-fleet-subtitle">Loading statistics...</p>
+        </div>
+        <div class="flex items-center gap-3 px-4 py-2 bg-zinc-900 rounded-lg border border-white/6">
+          <div class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
+          <span class="text-xs font-bold text-zinc-300 uppercase tracking-wide">NETWORK LATENCY: 14ms</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="p-4 bg-white/4 rounded-xl border border-white/6">
+          <p class="text-[10px] text-zinc-500 uppercase tracking-widest mb-1.5">Total Repairs</p>
+          <p class="text-2xl font-bold text-white">8,432</p>
+          <div class="w-full bg-white/8 h-1 mt-4 rounded-full overflow-hidden">
+            <div class="bg-cyan-400 h-full rounded-full" style="width:85%"></div>
+          </div>
+        </div>
+        <div class="p-4 bg-white/4 rounded-xl border border-white/6">
+          <p class="text-[10px] text-zinc-500 uppercase tracking-widest mb-1.5">Success Rate</p>
+          <p class="text-2xl font-bold text-white">99.2%</p>
+          <div class="w-full bg-white/8 h-1 mt-4 rounded-full overflow-hidden">
+            <div class="bg-amber-400 h-full rounded-full" style="width:99%"></div>
+          </div>
+        </div>
+        <div class="p-4 bg-white/4 rounded-xl border border-white/6">
+          <p class="text-[10px] text-zinc-500 uppercase tracking-widest mb-1.5">Active Tickets</p>
+          <p class="text-2xl font-bold text-white">42</p>
+          <div class="w-full bg-white/8 h-1 mt-4 rounded-full overflow-hidden">
+            <div class="bg-red-400 h-full rounded-full" style="width:40%"></div>
+          </div>
+        </div>
+        <div class="p-4 bg-white/4 rounded-xl border border-white/6">
+          <p class="text-[10px] text-zinc-500 uppercase tracking-widest mb-1.5">Videos Online</p>
+          <p class="text-2xl font-bold text-white" id="ts-video-count">—</p>
+          <div class="w-full bg-white/8 h-1 mt-4 rounded-full overflow-hidden">
+            <div class="bg-indigo-400 h-full rounded-full" style="width:65%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FAB -->
+  <a href="ai.html" class="fixed bottom-8 right-8 w-14 h-14 bg-cyan-400 text-zinc-950 rounded-full shadow-[0_0_24px_rgba(0,251,251,0.4)] flex items-center justify-center hover:scale-110 transition-all z-40">
+    <span class="material-symbols-outlined font-bold" style="font-size:26px">add</span>
+  </a>
+
+  <!-- ╔════════════════════════════════════════════════════╗
+       ║  Floating Chat — MR Sergeant  (markup)            ║
+       ║  States: open | minimized | docked                ║
+       ╚════════════════════════════════════════════════════╝ -->
+  <div id="ts-chat-panel" data-state="open">
+
+    <!-- Header -->
+    <div id="ts-chat-header">
+      <div class="ts-chat-avatar">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZuqBe3n3srysDN_syqwi5QcfGaNQ_GN3rWWNNdeNt4tpLyBRylu1jy1ZLT48eiCPK_g6CFuFuWrKhN9K-3chMRcugPiBtcDHGdextJ2wuofmxCApY1m-GF9KCsXz4vYH8yDOhOeY0vPT5zOMpjzTZ5dwunJyyT2ZoX_waJSc6J-y59OCzOVEWNeFTCjObh6JdSqUoWAheSyYWme3DtIIrL-dObRsauFBmW4Kn8XmMx6OHSGF533ATCfuzXCs94rhhc4f65V8Utbo"
+             alt="MR Sergeant" />
+      </div>
+      <div class="ts-chat-name">
+        <h4>MR Sergeant</h4>
+        <span>Tactical AI Assistant</span>
+      </div>
+      <div class="ts-chat-controls">
+        <button id="ts-chat-minimize-btn" title="Minimize">
+          <span class="material-symbols-outlined" style="font-size:18px" id="ts-chat-toggle-icon">minimize</span>
+        </button>
+        <button id="ts-chat-close-btn" title="Dock to bottom">
+          <span class="material-symbols-outlined" style="font-size:18px">close</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- API Key Setup (shown when no key stored) -->
+    <div id="ts-chat-apikey-setup" style="display:none">
+      <p>To activate <strong>MR Sergeant AI</strong>, enter your<br /><strong>Google Gemini API Key</strong> below.</p>
+      <p style="margin-top:-6px">Get a free key at <strong>aistudio.google.com</strong></p>
+      <input id="ts-chat-apikey-input" type="password" placeholder="AIzaSy..." />
+      <p id="ts-chat-apikey-err">Invalid key — please check and retry.</p>
+      <button id="ts-chat-apikey-btn">Activate MR Sergeant</button>
+    </div>
+
+    <!-- Messages -->
+    <div id="ts-chat-messages">
+      <!-- Loading indicator (hidden initially) -->
+      <div id="ts-chat-loading">
+        <div class="ts-loading-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="ts-loading-label" id="ts-chat-loading-label">HARDWARE_SCAN_IN_PROGRESS</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="ts-chat-footer">
+
+      <!-- Quick actions -->
+      <div id="ts-chat-quick">
+        <button onclick="tsChat.quickSend('I have a display issue (cracked, flickering, or no signal).')">// Screen/Display Issue</button>
+        <button onclick="tsChat.quickSend('My device is not charging or the battery is draining rapidly.')">// Power/Battery Failure</button>
+        <button onclick="tsChat.quickSend('Give me the full solution at once, Sergeant.')">// Request Full Brief</button>
+        <button onclick="tsChat.quickSend('Step 1 complete. What is the next step, Sergeant?')">// Next Step Please</button>
+      </div>
+
+      <!-- Image preview -->
+      <div id="ts-chat-img-preview">
+        <img id="ts-chat-img-thumb" src="" alt="Preview" />
+        <button id="ts-chat-img-remove" title="Remove image">
+          <span>✕</span>
+        </button>
+      </div>
+
+      <!-- Input row -->
+      <div id="ts-chat-input-row">
+        <button id="ts-chat-upload-btn" title="Upload evidence">
+          <span class="material-symbols-outlined" style="font-size:18px">image</span>
+        </button>
+        <input type="file" id="ts-chat-file-input" accept="image/*" style="display:none" />
+
+        <div id="ts-chat-input-wrap">
+          <textarea id="ts-chat-input" placeholder="Describe your technical issue, soldier..." rows="1"></textarea>
+          <button id="ts-chat-send-btn" title="Send">
+            <span class="material-symbols-outlined" style="font-size:14px;color:#0a0a0a">send</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Status strip -->
+      <div id="ts-chat-status-strip">
+        <div style="display:flex;gap:12px">
+          <div class="ts-status-dot-grp">
+            <div class="ts-status-dot green"></div>
+            <span class="ts-status-lbl">Uplink Ready</span>
+          </div>
+          <div class="ts-status-dot-grp">
+            <div class="ts-status-dot grey"></div>
+            <span class="ts-status-lbl">AES-256 Enabled</span>
+          </div>
+        </div>
+        <span class="ts-status-lbl">TECH_SERGEANT_v2.0</span>
+      </div>
+
+    </div>
+  </div><!-- /#ts-chat-panel -->
+
+  <!-- Docked Tab -->
+  <div id="ts-chat-dock">
+    <div class="dock-ava">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZuqBe3n3srysDN_syqwi5QcfGaNQ_GN3rWWNNdeNt4tpLyBRylu1jy1ZLT48eiCPK_g6CFuFuWrKhN9K-3chMRcugPiBtcDHGdextJ2wuofmxCApY1m-GF9KCsXz4vYH8yDOhOeY0vPT5zOMpjzTZ5dwunJyyT2ZoX_waJSc6J-y59OCzOVEWNeFTCjObh6JdSqUoWAheSyYWme3DtIIrL-dObRsauFBmW4Kn8XmMx6OHSGF533ATCfuzXCs94rhhc4f65V8Utbo"
+           alt="MR Sergeant" />
+    </div>
+    <div class="dock-label">
+      <p>MR Sergeant</p>
+      <span>Tactical AI</span>
+    </div>
+    <span class="material-symbols-outlined" style="font-size:18px;margin-left:4px">expand_less</span>
+  </div>
+
+  <!-- ╔════════════════════════════════════════════════════╗
+       ║  Floating Chat — MR Sergeant  (AI Brain + Logic)  ║
+       ╚════════════════════════════════════════════════════╝ -->
+  <script type="module">
+  import { GoogleGenAI } from "https://esm.sh/@google/genai@1";
+  import { GEMINI_API_KEY } from "./js/api-key.js";
+
+  /* ══════════════════════════════════════════════════════════════
+     Use js/api-key.js to store your Gemini API key.
+     Keep js/api-key.js out of source control and use js/api-key.example.js as a template.
+     Leave GEMINI_API_KEY blank to show the key-entry prompt to each visitor.
+  ══════════════════════════════════════════════════════════════ */
+  const HARDCODED_API_KEY = GEMINI_API_KEY;
+  /* ══════════════════════════════════════════════════════════════ */
+
+  /* ── Constants ─────────────────────────────────────────────── */
+  const STORAGE_KEY   = 'ts_mr_sergeant_session';
+  const APIKEY_KEY    = 'ts_gemini_api_key';
+  const AVATAR_URL    = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDZuqBe3n3srysDN_syqwi5QcfGaNQ_GN3rWWNNdeNt4tpLyBRylu1jy1ZLT48eiCPK_g6CFuFuWrKhN9K-3chMRcugPiBtcDHGdextJ2wuofmxCApY1m-GF9KCsXz4vYH8yDOhOeY0vPT5zOMpjzTZ5dwunJyyT2ZoX_waJSc6J-y59OCzOVEWNeFTCjObh6JdSqUoWAheSyYWme3DtIIrL-dObRsauFBmW4Kn8XmMx6OHSGF533ATCfuzXCs94rhhc4f65V8Utbo';
+
+  const SYSTEM_PROMPT = `Role: You are MR Sergeant, a professional, elite technical support specialist for the website "Tech Sergeant." You specialize in diagnosing hardware and software issues for computers, mobile devices, and consumer electronics.
+
+Communication Style:
+Tone: Helpful, methodical, and authoritative but accessible.
+Formatting: Use Markdown (bolding, numbered lists) to make steps easy to read. Use horizontal lines (---) to separate diagnosis from solutions.
+
+Operational Protocol:
+1. Initial Assessment: Analyze the user's text and any provided images. Look for error codes, cable connections, physical damage, or UI glitches in photos.
+2. Verification Phase: Before giving a solution, you MUST ask 1–2 clarifying questions to confirm the specific model, OS, or circumstances (e.g., "Did this happen after an update?").
+3. The Solution (Step-by-Step Recovery Plan):
+   - CRITICAL: By default, provide only the FIRST STEP of the recovery plan.
+   - After presenting the first step, ask the user to confirm once they have completed it before moving to the next one.
+   - EXCEPTION: If the user explicitly asks for the "full solution", "all steps", or "entire brief", provide the complete plan at once.
+   - Start with the simplest fix (e.g., "Check the power cable").
+   - Move to technical steps only if necessary.
+   - Include Safety Warnings for hardware tasks (e.g., "Ensure the device is unplugged before touching internal components").
+
+Constraint: If a problem is physically impossible to fix via chat (like a cracked screen), guide the user on what parts they need to buy or how to find a local repair shop.
+
+Identity: Always refer to yourself as MR Sergeant. Never break character or mention that you are a large language model.`;
+
+  const GREETING = `Greetings soldier. I am **MR Sergeant**, your elite technical support specialist.
+
+I am locked, loaded, and ready to diagnose any hardware or software casualties you're experiencing.
+
+**Instructions:** Describe your issue in detail. You can also upload a photo of the damage or error screen for analysis.
+
+Standing by for briefing.`;
+
+  /* ── DOM refs ──────────────────────────────────────────────── */
+  const panel       = document.getElementById('ts-chat-panel');
+  const dock        = document.getElementById('ts-chat-dock');
+  const msgArea     = document.getElementById('ts-chat-messages');
+  const loadingEl   = document.getElementById('ts-chat-loading');
+  const loadingLbl  = document.getElementById('ts-chat-loading-label');
+  const input       = document.getElementById('ts-chat-input');
+  const sendBtn     = document.getElementById('ts-chat-send-btn');
+  const uploadBtn   = document.getElementById('ts-chat-upload-btn');
+  const fileInput   = document.getElementById('ts-chat-file-input');
+  const imgPreview  = document.getElementById('ts-chat-img-preview');
+  const imgThumb    = document.getElementById('ts-chat-img-thumb');
+  const imgRemove   = document.getElementById('ts-chat-img-remove');
+  const toggleIcon  = document.getElementById('ts-chat-toggle-icon');
+  const apikeySetup = document.getElementById('ts-chat-apikey-setup');
+  const apikeyInput = document.getElementById('ts-chat-apikey-input');
+  const apikeyBtn   = document.getElementById('ts-chat-apikey-btn');
+  const apikeyErr   = document.getElementById('ts-chat-apikey-err');
+  const quickBtns   = document.querySelectorAll('#ts-chat-quick button');
+
+  /* ── State ─────────────────────────────────────────────────── */
+  let chatState   = 'open';            // open | minimized | docked
+  let isLoading   = false;
+  let pendingImg  = null;              // { data, mimeType }
+  let history     = [];                // Gemini chat history
+  // Hardcoded key takes priority; falls back to per-visitor localStorage key
+  let geminiKey   = HARDCODED_API_KEY || localStorage.getItem(APIKEY_KEY) || '';
+
+  /* ── Panel state machine ───────────────────────────────────── */
+  function setPanelState(next) {
+    chatState = next;
+    panel.setAttribute('data-state', next);
+    dock.style.display = (next === 'docked') ? 'flex' : 'none';
+    if (next === 'minimized') {
+      toggleIcon.textContent = 'expand_more';
+      document.getElementById('ts-chat-minimize-btn').title = 'Expand';
+    } else {
+      toggleIcon.textContent = 'minimize';
+      document.getElementById('ts-chat-minimize-btn').title = 'Minimize';
+    }
+    if (next === 'open') scrollBottom();
+  }
+
+  document.getElementById('ts-chat-minimize-btn').addEventListener('click', () =>
+    setPanelState(chatState === 'minimized' ? 'open' : 'minimized'));
+  document.getElementById('ts-chat-close-btn').addEventListener('click', () =>
+    setPanelState('docked'));
+  dock.addEventListener('click', () => setPanelState('open'));
+
+  /* ── API key setup ─────────────────────────────────────────── */
+  function showSetup(show) {
+    apikeySetup.style.display = show ? 'flex' : 'none';
+    msgArea.style.display     = show ? 'none' : '';
+    document.getElementById('ts-chat-footer').style.display = show ? 'none' : '';
+  }
+
+  apikeyBtn.addEventListener('click', async () => {
+    const key = apikeyInput.value.trim();
+    if (!key.startsWith('AIza')) {
+      apikeyErr.style.display = 'block'; return;
+    }
+    apikeyErr.style.display = 'none';
+    geminiKey = key;
+    localStorage.setItem(APIKEY_KEY, key);
+    showSetup(false);
+    initChat();
+  });
+
+  apikeyInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') apikeyBtn.click();
+  });
+
+  /* ── Chat initialisation ───────────────────────────────────── */
+  function initChat() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        history = data.history || [];
+        data.messages.forEach(m => renderMessage(m, false));
+        scrollBottom();
+        return;
+      } catch (_) {}
+    }
+    // First launch — show greeting
+    const greeting = {
+      id: 'initial', role: 'assistant',
+      content: GREETING, timestamp: Date.now()
+    };
+    renderMessage(greeting, false);
+    history = [];
+    saveSession([greeting]);
+  }
+
+  /* ── Render a message bubble ───────────────────────────────── */
+  function renderMessage(msg, scroll = true) {
+    const isAI = msg.role === 'assistant';
+    const wrap = document.createElement('div');
+    wrap.setAttribute('data-msg-id', msg.id);
+
+    if (isAI) {
+      const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      wrap.className = 'ts-msg-ai';
+      wrap.innerHTML = `
+        <div class="ts-msg-ai-ava"><img src="${AVATAR_URL}" alt="AI"/></div>
+        <div class="ts-msg-ai-bubble">
+          ${marked.parse(msg.content)}
+          <div class="ts-msg-ai-meta">
+            <div class="dot"></div>
+            MR SERGEANT // UNIT-01 &nbsp;·&nbsp; ${time}
+          </div>
+        </div>`;
+    } else {
+      const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      let imgHtml = '';
+      if (msg.image) imgHtml = `<img class="ts-msg-img" src="${msg.image}" alt="Attachment"/>`;
+      wrap.innerHTML = `
+        <div class="ts-msg-user">
+          <div class="ts-msg-user-bubble">
+            ${imgHtml}${escHtml(msg.content)}
+          </div>
+        </div>
+        <div class="ts-msg-user-meta">USER // SIGNAL-01 &nbsp;·&nbsp; ${time}</div>`;
+    }
+
+    // Insert before the loading indicator
+    msgArea.insertBefore(wrap, loadingEl);
+    if (scroll) scrollBottom();
+  }
+
+  /* ── Send a message ────────────────────────────────────────── */
+  async function sendMessage(text, imgData) {
+    text = (text || '').trim();
+    if (!text && !imgData) return;
+    if (isLoading) return;
+
+    const userMsg = {
+      id: Date.now().toString(), role: 'user',
+      content: text, image: imgData?.data,
+      timestamp: Date.now()
+    };
+    renderMessage(userMsg);
+
+    // Clear input & image
+    input.value = '';
+    clearImage();
+    setLoading(true);
+
+    // Build Gemini history (last 10 turns)
+    const geminiHistory = history.slice(-10).map(h => ({
+      role: h.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: h.content }]
+    }));
+
+    const responseText = await callGemini(text, geminiHistory, imgData);
+
+    setLoading(false);
+
+    const aiMsg = {
+      id: (Date.now() + 1).toString(), role: 'assistant',
+      content: responseText, timestamp: Date.now()
+    };
+    renderMessage(aiMsg);
+
+    // Update history
+    history.push({ role: 'user', content: text });
+    history.push({ role: 'assistant', content: responseText });
+
+    // Persist
+    const allMsgs = getAllRenderedMessages();
+    saveSession(allMsgs);
+  }
+
+  /* ── Gemini API call ───────────────────────────────────────── */
+  async function callGemini(text, geminiHistory, imgData) {
+    try {
+      const ai = new GoogleGenAI({ apiKey: geminiKey });
+      const currentParts = [{ text }];
+      if (imgData) {
+        currentParts.push({
+          inlineData: {
+            data: imgData.data.split(',')[1],
+            mimeType: imgData.mimeType
+          }
+        });
+      }
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.0-flash',
+        contents: [...geminiHistory, { role: 'user', parts: currentParts }],
+        config: { systemInstruction: SYSTEM_PROMPT, temperature: 0.7 }
+      });
+      return response.text || "I'm having trouble processing that. Please try again, soldier.";
+    } catch (err) {
+      console.error('Gemini error:', err);
+      return "**Error:** Could not reach the command center. Check your API key or connection.";
+    }
+  }
+
+  /* ── Helpers ───────────────────────────────────────────────── */
+  function setLoading(on) {
+    isLoading = on;
+    loadingEl.style.display = on ? 'flex' : 'none';
+    sendBtn.disabled = on;
+    input.disabled   = on;
+    quickBtns.forEach(b => b.disabled = on);
+    loadingLbl.textContent = 'HARDWARE_SCAN_IN_PROGRESS';
+    if (on) {
+      setTimeout(() => {
+        if (isLoading) loadingLbl.textContent = 'MR_SERGEANT_CALCULATING_TRAJECTORY';
+      }, 1500);
+      scrollBottom();
+    }
+  }
+
+  function scrollBottom() {
+    msgArea.scrollTop = msgArea.scrollHeight;
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function clearImage() {
+    pendingImg = null;
+    imgPreview.style.display = 'none';
+    imgThumb.src = '';
+    fileInput.value = '';
+  }
+
+  function getAllRenderedMessages() {
+    const msgs = [];
+    msgArea.querySelectorAll('[data-msg-id]').forEach(el => {
+      const id = el.getAttribute('data-msg-id');
+      const isAI = el.classList.contains('ts-msg-ai');
+      // extract text from bubble (skip meta line)
+      const bubble = isAI
+        ? el.querySelector('.ts-msg-ai-bubble')
+        : el.querySelector('.ts-msg-user-bubble');
+      const img = el.querySelector('.ts-msg-img');
+      msgs.push({
+        id, role: isAI ? 'assistant' : 'user',
+        content: bubble ? bubble.innerText.replace(/MR SERGEANT.*$/, '').trim() : '',
+        image: img ? img.src : undefined,
+        timestamp: parseInt(id) || Date.now()
+      });
+    });
+    return msgs;
+  }
+
+  function saveSession(messages) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ messages, history }));
+  }
+
+  /* ── Image upload ──────────────────────────────────────────── */
+  uploadBtn.addEventListener('click', () => fileInput.click());
+
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      pendingImg = { data: reader.result, mimeType: file.type };
+      imgThumb.src = reader.result;
+      imgPreview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  imgRemove.addEventListener('click', clearImage);
+
+  /* ── Send controls ─────────────────────────────────────────── */
+  sendBtn.addEventListener('click', () => sendMessage(input.value, pendingImg));
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage(input.value, pendingImg);
+    }
+  });
+
+  /* ── Auto-resize textarea ──────────────────────────────────── */
+  input.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 100) + 'px';
+  });
+
+  /* ── Quick actions (exposed globally) ──────────────────────── */
+  window.tsChat = {
+    quickSend: (text) => sendMessage(text, null)
+  };
+
+  /* ── Boot ──────────────────────────────────────────────────── */
+  if (!geminiKey) {
+    showSetup(true);
+  } else {
+    showSetup(false);
+    initChat();
+  }
+
+  setPanelState('open');
+  </script>
+
+  <!-- ══ Project Scripts ════════════════════════════════════════ -->
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    (function () {
+      function doLogin() {
+        var user = document.getElementById('ts-login-user').value;
+        var pw   = document.getElementById('ts-login-pw').value;
+        if (Auth.login(user, pw)) {
+          document.getElementById('ts-login-backdrop').classList.remove('show');
+          window.location.href = 'admin.html';
+        } else {
+          document.getElementById('ts-login-err').classList.add('show');
+        }
+      }
+      document.getElementById('ts-login-submit-btn').addEventListener('click', doLogin);
+      document.getElementById('ts-login-pw').addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
+      document.getElementById('ts-login-user').addEventListener('keydown', function (e) { if (e.key === 'Enter') document.getElementById('ts-login-pw').focus(); });
+      Storage.ready.then(function () {
+        var active = Storage.videos.list().filter(function (v) { return v.active; }).length;
+        var el  = document.getElementById('ts-video-count');
+        var sub = document.getElementById('ts-fleet-subtitle');
+        var os  = Storage.osLinks.list().length;
+        var p   = Storage.products.list().length;
+        if (el)  el.textContent  = active;
+        if (sub) sub.textContent = active + ' active videos \u00B7 ' + os + ' OS images \u00B7 ' + p + ' tools in catalog';
+      });
+    })();
+  </script>
+
+</body>
+</html>

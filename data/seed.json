@@ -1,0 +1,230 @@
+{
+  "auth": [{ "id": "auth_main", "password": "techsarge2026" }],
+  "videos": [
+    {
+      "id": "v_001",
+      "title": "Kernel Patching 101",
+      "description": "Complete teardown and thermal paste application for high-frequency neural cores.",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnail": "https://lh3.googleusercontent.com/aida-public/AB6AXuBIZCsu0gSKodo2ldjIYPig9M2PFlIkXjKi7LUFm4GXAx3L3209_MBUaDcGvQJ8q3RYlteL6BLyRroTJmnPAoSo3Tlllxfd1YQW4fR7pUvQV5wSAxCm8NAdffH5scSFZJ9QH2ZCeYerFIlescJWffP0R59ismWS_rkgK-f40f51LfjVrzbjERFoqnVrARFlw5m0sR5P7KhRUV-hXJX_32RJdu-nWIHsL2C9h_Fa1AHvRHwO0LRAPoA0W_q158PuFunDSyS1DVdwgD0",
+      "duration": "18:42",
+      "tags": ["Logic", "Tier-1"],
+      "active": true,
+      "views": 12400,
+      "likes": 842,
+      "comments": [
+        { "id": "c1", "author": "Operator_Z", "text": "Best breakdown I have ever seen for kernel patching.", "ts": 1714000000 },
+        { "id": "c2", "author": "NeuroPilot", "text": "Saved my node at 3AM. Legend.", "ts": 1714100000 }
+      ],
+      "updatedAt": "2023-10-24"
+    },
+    {
+      "id": "v_002",
+      "title": "Custom BIOS Injection",
+      "description": "Step by step guide to flashing a custom BIOS without bricking your board.",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnail": "https://lh3.googleusercontent.com/aida-public/AB6AXuDnomhJrRxlt7WG_UV5E6rKpod_DOTRaSzbJGWL1CMwZbnrNYBwZcd1BjVF7F4zxMeyHJS3VGZCQk0e6623I91F8fEydmXXitNo4BdK_AvLPK-kJfzCpch7_0QjLp1bOkxY_m5iEBVTwGtFDY-EHUI4YhbZ-ZjwCYctQYJAsPM8z0gfLJhBTJaWdyf-IBnNGBEVJ_OXHlTe7dd0_IIJtjLW88SSGONjo2TL_APfwuAOCnsEcWJ2Y3jhCZyEPLWShTnM2iDF6SIHmXM",
+      "duration": "23:11",
+      "tags": ["Firmware", "Expert"],
+      "active": false,
+      "views": 8100,
+      "likes": 510,
+      "comments": [],
+      "updatedAt": "2023-10-21"
+    },
+    {
+      "id": "v_003",
+      "title": "Neural Processor Cooling Sync",
+      "description": "Complete teardown and thermal paste application for high-frequency neural cores.",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnail": "https://lh3.googleusercontent.com/aida-public/AB6AXuDhJ115CTfLkdJMB32yOuoje0uXkUDzZxDbl9_P4TIQOP2998a1K6X-1QI00Q0ENHO5FsIIXn2hxrHDrRVDdled06YjPj3Y1jIOCqW_mvvnVcFnnxCN4ylQXMpE-2pN8nXYWaG1pHXVJX_U249WzbQcNACpp5s7dcj9wj8vn5rWYgnxfMCRS9Dm9z7-RSUwpFlvPNXnF3QXfEJi91czbpEfRYD3KW99w_ZQR-TnPREOO3jf-5MLsWnWkRwiMjwl9TYg2UxtKmyrpwY",
+      "duration": "18:42",
+      "tags": ["Logic", "Tier-1"],
+      "active": true,
+      "views": 5400,
+      "likes": 319,
+      "comments": [
+        { "id": "c3", "author": "HeatSink_Dev", "text": "Perfect reference for cooling setups.", "ts": 1714200000 }
+      ],
+      "updatedAt": "2024-01-12"
+    },
+    {
+      "id": "v_004",
+      "title": "The Carbon Era: Full Documentary",
+      "description": "A deep dive into the evolution of carbon-based semiconductors and their impact on global processing power.",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnail": "https://lh3.googleusercontent.com/aida-public/AB6AXuAAJOTnUG9LmDIwz5eHeDvHM-WR602r326lI-I_iIkRf5mB1mbEW16ELpoGA8SI2MoZpvwovsbfYjh8D9k2si3RivT7RbQPzGhoR6ifvdi-HNCahBK-tFaYwRuWnj8-tlXfh9groog9xYkhkrXQvmK6ksqVQwRu5-bk42ASlHM1ciJIsok_txOBlEq5T9AbMxUu7NnjdbSMTkAVmB_yDsAoL6F8JNKpfXJFrlXJ2imAHZilHVPqqbXaljReijS9yBvm2JL0t2yPGzc",
+      "duration": "45:10",
+      "tags": ["Physical", "Docu-Series"],
+      "active": true,
+      "views": 21800,
+      "likes": 1704,
+      "comments": [],
+      "updatedAt": "2024-02-04"
+    },
+    {
+      "id": "v_005",
+      "title": "Data Salvage: Platter Swap",
+      "description": "High-risk data recovery techniques using mechanical platter swaps in cleanroom conditions.",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnail": "https://lh3.googleusercontent.com/aida-public/AB6AXuDNBM6Mzm7BSmgtUj1ggrkUOyLZMUDv9oNMZlfj3wjw6elvjdFUh7EBKSe2zX2D9h7CsqMIOehYwA6fcNyuoq3aTuNxWoniZvNIPkCvOAKb5BgoTYfJPHIMby2-VjwwPldy5KIjYY5V8QPI_wN5KYdHyEwAkmbQT2q-3WaKr6niakc9FkYYdl_zykvoCsAEf9WoJ1r3gy9PZW_reCTcUR0fRDi1B3Y8AV_bJB7wG6q0LMOwqJoyhXx8FD4es3fg0N14TC6RzcKeA7Q",
+      "duration": "12:15",
+      "tags": ["Physical", "Expert"],
+      "active": true,
+      "views": 3200,
+      "likes": 248,
+      "comments": [],
+      "updatedAt": "2024-03-09"
+    },
+    {
+      "id": "v_006",
+      "title": "AI Robotic Calibration",
+      "description": "Tutorial on calibrating precision motor controllers for autonomous assembly units.",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnail": "https://lh3.googleusercontent.com/aida-public/AB6AXuC_Oj4e4HFCZTTsfwhimIJDxf89TCKHwBpmjtUM02QVUeQ0oaHCj7aGbNWym95KzAOp5y6ip84Iop4hRHy78WLRhSv9ZQayxR6-29gkvez-eLJfeO-2YNMHuDeSjedtu2rTXad5Eo0Cq9laBI7th2E7OZupbMDVRufcF_rLWY9Lg0Q6QRj7TIdX1e9nI-p_rCZes8ALrKr-DU1C0ETi-opTt7UfK6vVevheIZuKw0QF1u3KCQujNqM0eX5aTOOCHa1GHUMR0gdMOVo",
+      "duration": "29:00",
+      "tags": ["Logic", "Mid-Level"],
+      "active": true,
+      "views": 7600,
+      "likes": 561,
+      "comments": [],
+      "updatedAt": "2024-03-22"
+    }
+  ],
+  "osLinks": [
+    {
+      "id": "os_001",
+      "name": "SargeWin 11 Pro",
+      "label": "STABLE",
+      "labelType": "stable",
+      "description": "Ultra-light Windows kernel with bloatware removal and enhanced forensic toolkit. Optimised for hardware engineers.",
+      "url": "https://example.com/download/sargewin",
+      "compatibility": 100,
+      "compatibilityLabel": "100% OPTIMIZED",
+      "active": true,
+      "guideVideo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "guideVideoType": "url",
+      "steps": [
+        { "id": "s1", "type": "text", "title": "Back Up Your Data", "text": "Before installing, create a full backup of your current drive using Windows Backup or an external tool. This step is critical — do not skip it.", "media": "" },
+        { "id": "s2", "type": "image", "title": "Flash the ISO to USB", "text": "Use Rufus or balenaEtcher to flash the downloaded .ISO to a USB 3.0 drive of 16GB or larger. Select GPT partition scheme.", "media": "https://lh3.googleusercontent.com/aida-public/AB6AXuBIZCsu0gSKodo2ldjIYPig9M2PFlIkXjKi7LUFm4GXAx3L3209_MBUaDcGvQJ8q3RYlteL6BLyRroTJmnPAoSo3Tlllxfd1YQW4fR7pUvQV5wSAxCm8NAdffH5scSFZJ9QH2ZCeYerFIlescJWffP0R59ismWS_rkgK-f40f51LfjVrzbjERFoqnVrARFlw5m0sR5P7KhRUV-hXJX_32RJdu-nWIHsL2C9h_Fa1AHvRHwO0LRAPoA0W_q158PuFunDSyS1DVdwgD0" },
+        { "id": "s3", "type": "text", "title": "Disable Secure Boot", "text": "Enter BIOS (usually F2 or Del on POST). Navigate to Secure Boot → Disabled. Save and exit. Your machine will restart.", "media": "" },
+        { "id": "s4", "type": "text", "title": "Boot from USB & Install", "text": "Select the USB drive in the boot menu. Follow on-screen instructions. Choose Custom Installation to control partitions.", "media": "" }
+      ]
+    },
+    {
+      "id": "os_002",
+      "name": "TechCore Sonoma",
+      "label": "LEGACY",
+      "labelType": "legacy",
+      "description": "Virtualization-ready macOS build for hardware logic testing and cross-platform dev environments.",
+      "url": "https://example.com/download/techcore",
+      "compatibility": 72,
+      "compatibilityLabel": "LEGACY DRIVERS REQ.",
+      "active": true,
+      "guideVideo": "",
+      "guideVideoType": "url",
+      "steps": [
+        { "id": "s1", "type": "text", "title": "Check Hardware Compatibility", "text": "TechCore Sonoma requires a machine with Intel Core i5 8th gen or later. AMD CPUs require additional kext patches.", "media": "" },
+        { "id": "s2", "type": "text", "title": "Download EFI Package", "text": "Download the matching EFI folder for your board from the repository. Place it at the root of your EFI partition.", "media": "" }
+      ]
+    },
+    {
+      "id": "os_003",
+      "name": "VoidSarge v2",
+      "label": "BETA-12",
+      "labelType": "beta",
+      "description": "Custom Arch-based distro. Minimalist, rolling release, pre-baked with network suites and TechSarge hooks.",
+      "url": "https://example.com/download/voidsarge",
+      "compatibility": 100,
+      "compatibilityLabel": "KERNEL NATIVE",
+      "active": true,
+      "guideVideo": "",
+      "guideVideoType": "url",
+      "steps": [
+        { "id": "s1", "type": "text", "title": "Partition Your Drive", "text": "Use `cfdisk /dev/sda` to create: 1 EFI partition (512MB, FAT32) and 1 root partition (ext4). Mount to /mnt.", "media": "" },
+        { "id": "s2", "type": "text", "title": "Run Installation Script", "text": "Run `bash <(curl -s https://install.voidsarge.dev)`. The script handles pacstrap, locale generation, and grub install.", "media": "" },
+        { "id": "s3", "type": "text", "title": "Enable TechSarge Hooks", "text": "After first boot run `techsarge-init` to pull the diagnostic daemon and enable network monitor services.", "media": "" }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "p_001",
+      "name": "Precision Pro Kit V4",
+      "tier": "Hardware Tier 1",
+      "price": "$49.99",
+      "description": "A 64-bit driver set specifically engineered for modern smartphone and laptop chassis. Non-slip industrial handle.",
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuD1VMyW_-ViZedehCIBLKDSs2EM1spKc0KtyM_8AKzQlWjXiZTsuKPPfnEt5mplXjYVe4UodBY9uLWncRpo1V2y8z1eoMc3r39_N0O3gewR83VgEt-33ecuKuD43wbK3eQxP8cv_iaOkcVr2dEXC4Fz3xv7oi-JpskxEY5Qr-U9yFg7qsQ-SgyQbkoJWQWHam13H1XqSbJfp7J9FFSCIn4STE58Z6KBpvHbIsiNXSIOC6nxBq_jJI2fNmBKZ83K75MY_dW35GEd6UQ",
+      "amazonUrl": "https://amazon.com/dp/example",
+      "darazUrl": "https://daraz.com/example",
+      "commission": "24%",
+      "certified": true,
+      "active": true
+    },
+    {
+      "id": "p_002",
+      "name": "Logic Probe X-90",
+      "tier": "Hardware Tier 2",
+      "price": "$124.50",
+      "description": "Auto-ranging digital multimeter with high-contrast OLED display. Perfect for tracing parasitic power drains.",
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuD3OT_JtgibtTOBGaPgUXIH4zDIwSFKMP3gkSTxxsvlVm4IOpYX7WAeI-Wwj5ZRjUd0SZaIvCKTL2EyQQFMT28sJdnEHPjGkSJ6KWmYoushbo14_E5vA_fhFGRNXek4Bq-Sp0bKq1nzGAV-MzbGMQU_Wr7pxGyOm2vxGjpZzOYF-rtBSTUwFHWVK1_Umr2ZVeMCzn-kQLtKbOh1qtHtFeyrc9-Lo1xycT2YV2-1ybs6MCCzbdGR6l8vn5PQ-ZeMhk7ZeeRXeefGV6s",
+      "amazonUrl": "https://amazon.com/dp/example",
+      "darazUrl": "https://daraz.com/example",
+      "commission": "12%",
+      "certified": true,
+      "active": true
+    },
+    {
+      "id": "p_003",
+      "name": "ESD Safety Matrix",
+      "tier": "Safety Gear",
+      "price": "$32.00",
+      "description": "Professional grade anti-static mat with grounding cable. Essential for board-level diagnostics and CPU swaps.",
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAeZ_uYDgPncs2JMBZfLc1hEpKzz7PFIyJmWe07IFtYTnFHZ2LBR423HeteeEvIGRQ-BQ-xFXWVTaOiypglv_Q1rKOzOGVDAsRwmGzZsTBuRBBpjLfJ6PQS7FBOZAs6r3epQ7sUQjFbPJbhQmphM_C3LB47J30W41Hppg4-h78RizfyQ-V9345rpZWvP2p5O6lunGzLpDx4OV14B2PQfjFRAleSigaNHvXFjrpssYm6CIWE2K66riZyCoXj87ODuJZnYmNg",
+      "amazonUrl": "https://amazon.com/dp/example",
+      "darazUrl": "https://daraz.com/example",
+      "commission": "8%",
+      "certified": true,
+      "active": true
+    },
+    {
+      "id": "p_004",
+      "name": "Flux Core Soldering Station",
+      "tier": "Hardware Tier 3",
+      "price": "$185.00",
+      "description": "Precision thermal control for lead-free soldering. Includes four interchangeable micro-tips.",
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAXEEegCXiAIgkBdYTaGWJet83w6yCj4dHIt9q1g1PsWDNwhJuQnNWum8VFOdQvimnK-WqtreHwYXWVhfpZrW-QDLpWKu9TQ1zGsQV8Gs7iUeAr68J4TscEX3kxBoO66b9eCmhTKyp2T0eT9ejEBC4Rx3gKScFmYox2-o0IHYTEyei3J-uURkTlpC2m30xgJvfmAtK9TlDgmMzyDZsYz-5zI6JubqqOsS7529afBxCnY9CfEevsEH3dMCxzC40JMzUepBVZyZuBJuo",
+      "amazonUrl": "https://amazon.com/dp/example",
+      "darazUrl": "https://daraz.com/example",
+      "commission": "18%",
+      "certified": false,
+      "active": true
+    },
+    {
+      "id": "p_005",
+      "name": "Opening Tool Matrix",
+      "tier": "Hardware Tier 1",
+      "price": "$19.99",
+      "description": "Anti-marring nylon spudgers and suction cups designed for seamless screen separation.",
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCkqSygljCz1H-OUJBUaJW7IeDoZfFCkD5NsJAhVHvyz50WOZxwqF_jcljOj3lJZTUiws9AWbEVyC6Ihmu7MaUxfUYDvCcTpjl_lxLv2M1gZr1nlSAyZdEz6AykD-cXjZd1Nkg28lWrEYf4rmX0p3Sa2Ayb6S0BgKps8xuM1KujaDovmZPL-okelDgJf9samXczuQ-IBuXYR4fk3N4PJeEsYmPqdUjDM6_4NCMKxe4Fh9QfenIACTVzhBPKCtqEBF_mHZVlbzjDy4Q",
+      "amazonUrl": "https://amazon.com/dp/example",
+      "darazUrl": "https://daraz.com/example",
+      "commission": "10%",
+      "certified": true,
+      "active": true
+    },
+    {
+      "id": "p_006",
+      "name": "SargeVision HD Cam",
+      "tier": "Hardware Tier 3",
+      "price": "$299.00",
+      "description": "1080p digital microscope with HDMI output. Essential for identifying blown SMD capacitors.",
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuALYm2m69ReBeyCcSPv3EZN0tebEJUo_Tj-xAd0vAxsnS24XEBBy0SvcUVRxP2DiIRK6plV1LGDeBNyrojLUHPtHpJ8cBBh4LoPXeWOiXoLzRh22XYQLhNmxVsxArIR1FqZ_hADGmUf8oR8RWPZFPHHeXBa1tziRz7UEUfEY6pkdywVHBtihw5BF4dlfxBEG8glmOBb2fBA3ij783hiVdz35zpx4Nuzr-iD_1QtpRYtreTIuFI4KkGKFXVzNkWIa-IKO9ZcF2JeIpA",
+      "amazonUrl": "https://amazon.com/dp/example",
+      "darazUrl": "https://daraz.com/example",
+      "commission": "20%",
+      "certified": false,
+      "active": true
+    }
+  ]
+}

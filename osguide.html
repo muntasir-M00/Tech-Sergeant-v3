@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>TechSarge | OS Installation Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="js/tailwind-config.js"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .os-banner {
+      width: 100%;
+      max-height: 280px;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: block;
+    }
+    .os-banner-wrap {
+      position: relative;
+      margin-bottom: 28px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .os-banner-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, #0f0f11 100%);
+      pointer-events: none;
+    }
+    .warn-box {
+      background: rgba(251,191,36,0.06);
+      border: 1.5px solid rgba(251,191,36,0.35);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+    .step-card {
+      background: rgba(27,27,31,0.85);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      gap: 20px;
+    }
+    .step-card:hover { border-color: rgba(0,251,251,0.2); }
+    .step-num {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(0,251,251,0.1);
+      border: 1px solid rgba(0,251,251,0.25);
+      color: #00fbfb;
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-media-img {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 14px;
+      display: block;
+    }
+    .step-media-video {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 14px;
+      display: block;
+    }
+    .progress-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      background: rgba(15,15,17,0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .check-step {
+      cursor: pointer;
+      user-select: none;
+    }
+    .check-step input[type="checkbox"] {
+      accent-color: #00fbfb;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+    .step-done { opacity: 0.5; }
+    .step-done .step-num { background: rgba(0,251,251,0.25); }
+    .step-done h3 { text-decoration: line-through; color: #71717a !important; }
+  </style>
+</head>
+<body class="text-zinc-100 bg-[#0f0f11] min-h-screen" style="font-family:'Inter',system-ui,sans-serif;padding-bottom:64px">
+
+  <!-- TopNavBar -->
+  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 md:px-8 h-16 bg-[#0f0f11]/90 backdrop-blur-xl border-b border-white/8">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <div class="relative flex items-center justify-center w-9 h-9 bg-white/5 rounded-lg border border-white/10">
+        <span class="text-xl font-black tracking-tighter monogram-t">T</span>
+        <span class="text-xl font-black tracking-tighter monogram-s" style="margin-left:-3px">S<div class="monogram-glow"></div></span>
+      </div>
+      <span class="text-lg font-extrabold tracking-tight">
+        <span class="text-white">Tech</span>
+        <span class="text-cyan-400">Sargeant</span>
+      </span>
+    </a>
+    <nav class="hidden lg:flex items-center gap-6">
+      <a data-nav="home" data-nav-style="top" href="index.html" class="ts-topnav-link">Home</a>
+      <a data-nav="ai" data-nav-style="top" href="ai.html" class="ts-topnav-link">AI Diagnostics</a>
+      <a data-nav="videos" data-nav-style="top" href="videos.html" class="ts-topnav-link">Video Tutorials</a>
+      <a data-nav="osdownload" data-nav-style="top" href="osdownload.html" class="ts-topnav-link">OS Center</a>
+      <a data-nav="repair" data-nav-style="top" href="repair.html" class="ts-topnav-link">Repair Store</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <button id="ts-menu-toggle" class="ts-menu-toggle" title="Menu">
+        <span class="material-symbols-outlined" style="font-size:20px">menu</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="ts-main px-4 md:px-8 pb-8 min-h-screen">
+    <div class="max-w-3xl mx-auto">
+
+      <!-- Back -->
+      <a href="osdownload.html" class="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-cyan-400 transition-colors mb-8">
+        <span class="material-symbols-outlined" style="font-size:18px">arrow_back</span>
+        Back to OS Center
+      </a>
+
+      <!-- Loading / Error states -->
+      <div id="ts-guide-loading" class="text-center py-16">
+        <div class="w-8 h-8 border-2 border-cyan-400/20 border-t-cyan-400 rounded-full animate-spin mx-auto mb-4"></div>
+        <p class="text-zinc-500 text-sm">Loading installation guide...</p>
+      </div>
+      <div id="ts-guide-error" class="hidden text-center py-16">
+        <span class="material-symbols-outlined text-zinc-600 block mb-3" style="font-size:48px">error_outline</span>
+        <p class="text-zinc-500 text-sm mb-3">OS not found or not available.</p>
+        <a href="osdownload.html" class="text-cyan-400 text-sm inline-block hover:underline">Return to OS Center</a>
+      </div>
+
+      <!-- Actual Guide (hidden until loaded) -->
+      <div id="ts-guide-content" class="hidden">
+
+        <!-- Banner Image -->
+        <div id="ts-guide-banner-wrap" class="os-banner-wrap hidden">
+          <img id="ts-guide-banner" src="" alt="" class="os-banner" />
+        </div>
+
+        <!-- Header Info -->
+        <div class="glass-panel rounded-2xl p-7 border border-white/8 mb-6">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-5">
+            <div class="flex-1">
+              <div id="ts-guide-pill" class="ts-pill cyan mb-4">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" id="ts-guide-dot"></span>
+                <span id="ts-guide-label">STABLE</span>
+              </div>
+              <h1 id="ts-guide-name" class="text-3xl font-extrabold text-white tracking-tight mb-2"></h1>
+              <p id="ts-guide-desc" class="text-zinc-400 text-sm leading-relaxed mb-5"></p>
+              <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-3">
+                  <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest w-28">Compatibility</span>
+                  <div class="flex-1 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                    <div id="ts-guide-bar" class="h-full bg-cyan-400 rounded-full transition-all duration-700"></div>
+                  </div>
+                  <span id="ts-guide-compat" class="text-xs font-bold text-cyan-400 w-28 text-right"></span>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-3 shrink-0">
+              <a id="ts-guide-download" href="#" target="_blank" rel="noopener"
+                class="flex items-center justify-center gap-2 px-6 py-3 bg-cyan-400 text-zinc-950 font-bold text-sm rounded-xl hover:bg-cyan-300 transition-colors neo-cyan-glow">
+                <span class="material-symbols-outlined" style="font-size:18px">download</span>
+                Download OS
+              </a>
+              <div id="ts-step-pill" class="hidden text-center text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                <span id="ts-step-count"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ⚠️ Warning Box -->
+        <div id="ts-guide-warning" class="hidden warn-box mb-6">
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-amber-400 shrink-0 mt-0.5" style="font-size:22px">warning</span>
+            <div>
+              <p id="ts-warn-title" class="text-sm font-extrabold text-amber-400 uppercase tracking-widest mb-2">Warning</p>
+              <p id="ts-warn-text" class="text-sm text-amber-300/80 leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Guide Video (if set) -->
+        <div id="ts-guide-video-wrap" class="hidden mb-6">
+          <div class="glass-panel rounded-2xl p-5 border border-white/8">
+            <div class="flex items-center gap-2 mb-4">
+              <span class="material-symbols-outlined text-cyan-400" style="font-size:20px">video_library</span>
+              <h2 class="font-bold text-white text-base">Installation Video Guide</h2>
+            </div>
+            <div class="rounded-xl overflow-hidden bg-black border border-white/6 aspect-video">
+              <iframe id="ts-guide-iframe" class="w-full h-full" allowfullscreen frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- Steps -->
+        <div id="ts-guide-steps-wrap" class="hidden mb-8">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-cyan-400" style="font-size:22px">checklist</span>
+              <div>
+                <h2 class="font-extrabold text-white text-xl">Step-by-Step Installation</h2>
+                <p class="text-zinc-500 text-xs mt-0.5">Check each step as you complete it</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-cyan-400/8 border border-cyan-400/20 rounded-lg">
+              <span id="ts-done-count" class="text-xs font-bold text-cyan-400">0</span>
+              <span class="text-xs text-zinc-500">/</span>
+              <span id="ts-total-count" class="text-xs font-bold text-zinc-400"></span>
+              <span class="text-xs text-zinc-500 ml-1">done</span>
+            </div>
+          </div>
+          <div id="ts-steps-container" class="space-y-4">
+            <!-- populated dynamically -->
+          </div>
+        </div>
+
+        <!-- No Steps -->
+        <div id="ts-no-steps" class="hidden glass-panel rounded-2xl p-8 text-center border border-white/8 mb-8">
+          <span class="material-symbols-outlined text-zinc-600 block mb-3" style="font-size:36px">info</span>
+          <p class="text-zinc-500 text-sm mb-2">No installation steps have been added yet for this OS.</p>
+          <p class="text-zinc-600 text-xs">Check back soon or download the OS and follow official documentation.</p>
+          <a href="osdownload.html" class="text-cyan-400 text-sm mt-4 inline-block hover:underline">Return to OS Center</a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Progress Bar (bottom) -->
+  <div class="progress-bar" id="ts-progress-bar" style="display:none">
+    <div class="flex-1">
+      <div class="flex items-center justify-between mb-1">
+        <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Installation Progress</span>
+        <span id="ts-progress-pct" class="text-[10px] font-bold text-cyan-400">0%</span>
+      </div>
+      <div class="h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden">
+        <div id="ts-progress-fill" class="h-full bg-cyan-400 rounded-full transition-all duration-400" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    function escHtml(s) {
+      return String(s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+    }
+
+    function getEmbedUrl(url) {
+      if (!url) return '';
+      let u = url.trim();
+      if (u.includes('youtube.com/embed/') || u.includes('youtu.be/embed/')) return u;
+      const ytMatch = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+      if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
+      return u;
+    }
+
+    const completedSteps = new Set();
+    let totalSteps = 0;
+
+    function updateProgress() {
+      const done = completedSteps.size;
+      const pct = totalSteps > 0 ? Math.round((done / totalSteps) * 100) : 0;
+      const doneEl = document.getElementById('ts-done-count');
+      const pctEl = document.getElementById('ts-progress-pct');
+      const fillEl = document.getElementById('ts-progress-fill');
+      if (doneEl) doneEl.textContent = done;
+      if (pctEl) pctEl.textContent = pct + '%';
+      if (fillEl) fillEl.style.width = pct + '%';
+    }
+
+    function renderGuide(os) {
+      document.title = `TechSarge | ${os.name} Guide`;
+
+      // Banner image
+      if (os.image) {
+        document.getElementById('ts-guide-banner').src = os.image;
+        document.getElementById('ts-guide-banner').alt = os.name;
+        document.getElementById('ts-guide-banner-wrap').classList.remove('hidden');
+      }
+
+      // Label pill
+      const labelType = os.labelType || 'stable';
+      const pill = document.getElementById('ts-guide-pill');
+      const dot = document.getElementById('ts-guide-dot');
+      if (labelType === 'legacy') {
+        pill.className = 'ts-pill amber mb-4';
+        dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-400';
+      }
+      document.getElementById('ts-guide-label').textContent = os.label || 'STABLE';
+      document.getElementById('ts-guide-name').textContent = os.name;
+      document.getElementById('ts-guide-desc').textContent = os.description || '';
+
+      // Compatibility bar
+      document.getElementById('ts-guide-bar').style.width = (Number(os.compatibility) || 0) + '%';
+      if (labelType === 'legacy') document.getElementById('ts-guide-bar').classList.replace('bg-cyan-400', 'bg-amber-400');
+      document.getElementById('ts-guide-compat').textContent = os.compatibilityLabel || '';
+
+      // Download button
+      const downloadBtn = document.getElementById('ts-guide-download');
+      if (os.url) {
+        downloadBtn.href = os.url;
+      } else {
+        downloadBtn.style.opacity = '0.5';
+        downloadBtn.style.pointerEvents = 'none';
+        downloadBtn.innerHTML = `<span class="material-symbols-outlined" style="font-size:18px">download</span> No Link Set`;
+      }
+
+      // Warning box
+      if (os.warningText || os.warningTitle) {
+        document.getElementById('ts-warn-title').textContent = os.warningTitle || 'Important Warning';
+        document.getElementById('ts-warn-text').textContent = os.warningText || '';
+        document.getElementById('ts-guide-warning').classList.remove('hidden');
+      }
+
+      // Guide video
+      const videoUrl = (os.guideVideo || '').trim();
+      if (videoUrl) {
+        const embed = getEmbedUrl(videoUrl);
+        document.getElementById('ts-guide-iframe').src = embed;
+        document.getElementById('ts-guide-video-wrap').classList.remove('hidden');
+      }
+
+      // Steps
+      const steps = os.steps || [];
+      totalSteps = steps.length;
+
+      if (steps.length > 0) {
+        document.getElementById('ts-step-count').textContent = `${steps.length} step${steps.length !== 1 ? 's' : ''}`;
+        document.getElementById('ts-total-count').textContent = steps.length;
+        document.getElementById('ts-step-pill').classList.remove('hidden');
+
+        const container = document.getElementById('ts-steps-container');
+        container.innerHTML = steps.map((step, i) => {
+          const hasMedia = step.media && step.media.trim();
+          const isVideo = hasMedia && (
+            step.type === 'video' ||
+            step.media.includes('youtube.com') ||
+            step.media.includes('youtu.be') ||
+            step.media.endsWith('.mp4') ||
+            step.media.endsWith('.webm')
+          );
+
+          let mediaHtml = '';
+          if (hasMedia) {
+            if (isVideo) {
+              const embedSrc = getEmbedUrl(step.media);
+              mediaHtml = `<iframe src="${escHtml(embedSrc)}" allowfullscreen frameborder="0" class="step-media-video"></iframe>`;
+            } else {
+              mediaHtml = `<img src="${escHtml(step.media)}" alt="Step ${i+1}" class="step-media-img" />`;
+            }
+          }
+
+          const stepWarnHtml = step.warning ? `
+            <div class="mt-3 flex items-start gap-2 px-3 py-2 bg-amber-400/5 border border-amber-400/20 rounded-lg">
+              <span class="material-symbols-outlined text-amber-400 shrink-0" style="font-size:14px">warning</span>
+              <p class="text-xs text-amber-300/80">${escHtml(step.warning)}</p>
+            </div>` : '';
+
+          return `
+            <div class="step-card check-step" id="step-card-${i}" onclick="toggleStep(${i}, this)">
+              <div class="flex-shrink-0 pt-0.5">
+                <div class="step-num" id="step-num-${i}">${i + 1}</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-start justify-between gap-3 mb-3">
+                  <h3 class="text-base font-bold text-white leading-snug" id="step-title-${i}">${escHtml(step.title || '')}</h3>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <input type="checkbox" class="step-checkbox" id="step-check-${i}" onclick="event.stopPropagation()" onchange="toggleStepCheck(${i})" />
+                    <label for="step-check-${i}" class="text-[10px] font-bold text-zinc-600 uppercase tracking-widest cursor-pointer" onclick="event.stopPropagation()">Done</label>
+                  </div>
+                </div>
+                ${mediaHtml}
+                <p class="text-zinc-400 text-sm leading-relaxed">${escHtml(step.text || '')}</p>
+                ${stepWarnHtml}
+              </div>
+            </div>`;
+        }).join('');
+
+        document.getElementById('ts-guide-steps-wrap').classList.remove('hidden');
+        document.getElementById('ts-progress-bar').style.display = 'flex';
+        updateProgress();
+      } else {
+        document.getElementById('ts-no-steps').classList.remove('hidden');
+      }
+
+      document.getElementById('ts-guide-loading').classList.add('hidden');
+      document.getElementById('ts-guide-content').classList.remove('hidden');
+    }
+
+    function toggleStepCheck(i) {
+      const card = document.getElementById('step-card-' + i);
+      const check = document.getElementById('step-check-' + i);
+      if (check.checked) {
+        completedSteps.add(i);
+        card.classList.add('step-done');
+      } else {
+        completedSteps.delete(i);
+        card.classList.remove('step-done');
+      }
+      updateProgress();
+    }
+
+    function toggleStep(i, card) {
+      const check = document.getElementById('step-check-' + i);
+      check.checked = !check.checked;
+      toggleStepCheck(i);
+    }
+
+    Storage.ready.then(() => {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      if (!id) {
+        document.getElementById('ts-guide-loading').classList.add('hidden');
+        document.getElementById('ts-guide-error').classList.remove('hidden');
+        return;
+      }
+      const os = Storage.osLinks.get(id);
+      if (!os || !os.active) {
+        document.getElementById('ts-guide-loading').classList.add('hidden');
+        document.getElementById('ts-guide-error').classList.remove('hidden');
+        return;
+      }
+      renderGuide(os);
+    });
+  </script>
+</body>
+</html>

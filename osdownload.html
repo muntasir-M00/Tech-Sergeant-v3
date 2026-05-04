@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>TechSarge | OS Download Center</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="js/tailwind-config.js"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="text-zinc-100 bg-[#0f0f11] min-h-screen circuit-dotted" style="font-family:'Inter',system-ui,sans-serif">
+
+  <!-- TopNavBar -->
+  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 md:px-8 h-16 bg-[#0f0f11]/90 backdrop-blur-xl border-b border-white/8">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <div class="relative flex items-center justify-center w-9 h-9 bg-white/5 rounded-lg border border-white/10">
+        <span class="text-xl font-black tracking-tighter monogram-t">T</span>
+        <span class="text-xl font-black tracking-tighter monogram-s" style="margin-left:-3px">S<div class="monogram-glow"></div></span>
+      </div>
+      <span class="text-lg font-extrabold tracking-tight">
+        <span class="text-white">Tech</span>
+        <span class="text-cyan-400">Sargeant</span>
+      </span>
+    </a>
+    <nav class="hidden lg:flex items-center gap-6">
+      <a data-nav="home" data-nav-style="top" href="index.html" class="ts-topnav-link">Home</a>
+      <a data-nav="ai" data-nav-style="top" href="ai.html" class="ts-topnav-link">AI Diagnostics</a>
+      <a data-nav="videos" data-nav-style="top" href="videos.html" class="ts-topnav-link">Video Tutorials</a>
+      <a data-nav="osdownload" data-nav-style="top" href="osdownload.html" class="ts-topnav-link">OS Center</a>
+      <a data-nav="repair" data-nav-style="top" href="repair.html" class="ts-topnav-link">Repair Store</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <button id="ts-menu-toggle" class="ts-menu-toggle" title="Menu">
+        <span class="material-symbols-outlined" style="font-size:20px">menu</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="ts-main px-4 md:px-8 pb-16">
+    <div class="max-w-screen-xl mx-auto">
+
+      <!-- Hero Header -->
+      <div class="mb-10">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-xs font-bold text-cyan-400 uppercase tracking-widest">Central Repository v4.2</span>
+          <div class="h-px flex-1 bg-gradient-to-r from-cyan-400/20 to-transparent"></div>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-3 tracking-tight">
+          OS Download Center<span class="terminal-cursor ml-2"></span>
+        </h1>
+        <p class="text-zinc-400 text-sm max-w-2xl leading-relaxed">
+          Deploy hardened operating systems optimised for technical workflows. Click any OS card to view the step-by-step installation guide.
+        </p>
+      </div>
+
+      <!-- OS Cards Grid (rendered from Storage) -->
+      <div id="ts-os-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+        <!-- populated dynamically -->
+      </div>
+
+      <!-- Prep Checklist -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div class="lg:col-span-2 glass-panel p-7 rounded-2xl border-l-4 border-cyan-400">
+          <div class="flex items-center gap-4 mb-6">
+            <span class="material-symbols-outlined text-cyan-400" style="font-size:36px">fact_check</span>
+            <div>
+              <h2 class="text-xl font-bold text-white">Preparation Checklist</h2>
+              <p class="text-zinc-500 text-sm">Critical steps before initializing deployment.</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <label class="flex items-center gap-3 p-4 rounded-xl bg-white/4 border border-white/8 cursor-pointer ts-check-item hover:border-cyan-400/25 transition-colors">
+              <input type="checkbox" class="ts-check-input sr-only" data-key="usb" />
+              <span class="material-symbols-outlined ts-check-icon text-cyan-400" style="font-size:20px">check_circle</span>
+              <span class="text-sm font-medium text-zinc-200">Verify 16GB+ USB 3.0 Media</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-xl bg-white/4 border border-white/8 cursor-pointer ts-check-item hover:border-cyan-400/25 transition-colors">
+              <input type="checkbox" class="ts-check-input sr-only" data-key="boot" />
+              <span class="material-symbols-outlined ts-check-icon text-zinc-600" style="font-size:20px">radio_button_unchecked</span>
+              <span class="text-sm font-medium text-zinc-200">Disable Secure Boot in BIOS</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-xl bg-white/4 border border-white/8 cursor-pointer ts-check-item hover:border-cyan-400/25 transition-colors">
+              <input type="checkbox" class="ts-check-input sr-only" data-key="rsa" />
+              <span class="material-symbols-outlined ts-check-icon text-zinc-600" style="font-size:20px">radio_button_unchecked</span>
+              <span class="text-sm font-medium text-zinc-200">Backup local RSA keys &amp; configs</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-xl bg-white/4 border border-white/8 cursor-pointer ts-check-item hover:border-cyan-400/25 transition-colors">
+              <input type="checkbox" class="ts-check-input sr-only" data-key="cmos" />
+              <span class="material-symbols-outlined ts-check-icon text-zinc-600" style="font-size:20px">radio_button_unchecked</span>
+              <span class="text-sm font-medium text-zinc-200">Reset CMOS (Recommended)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="glass-panel p-7 rounded-2xl">
+          <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-5">Network Health</h3>
+          <div class="space-y-5">
+            <div class="flex justify-between items-end">
+              <div>
+                <p class="text-[10px] text-zinc-500 uppercase mb-1">CDN Latency</p>
+                <p class="text-2xl font-bold text-white">12ms</p>
+              </div>
+              <div class="h-7 flex items-end gap-0.5">
+                <div class="w-1 bg-cyan-400 rounded-full" style="height:60%"></div>
+                <div class="w-1 bg-cyan-400 rounded-full" style="height:80%"></div>
+                <div class="w-1 bg-cyan-400 rounded-full" style="height:70%"></div>
+                <div class="w-1 bg-cyan-400 rounded-full" style="height:100%"></div>
+              </div>
+            </div>
+            <div class="h-px bg-white/6"></div>
+            <div>
+              <p class="text-[10px] text-zinc-500 uppercase mb-2">Integrity Hash (MD5)</p>
+              <code class="block bg-black/50 p-3 rounded-lg text-[10px] text-cyan-400 break-all border border-cyan-400/10 font-mono">4c9e7f8b2d1a5c6e9a0f7b8d4c1a2e3f</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    function escHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+    }
+
+    const LABEL_STYLES = {
+      stable: { pill: 'ts-pill cyan', dot: 'bg-cyan-400 animate-pulse', icon: 'grid_view', border: 'border-cyan-400/20', btn: 'bg-cyan-400 text-zinc-950 hover:bg-cyan-300' },
+      legacy: { pill: 'ts-pill amber', dot: 'bg-amber-400', icon: 'laptop_mac', border: 'border-amber-400/20', btn: 'border border-amber-400 text-amber-400 hover:bg-amber-400/10' },
+      beta:   { pill: 'ts-pill cyan', dot: 'bg-cyan-400', icon: 'terminal', border: 'border-cyan-400/20', btn: 'bg-cyan-400 text-zinc-950 hover:bg-cyan-300' },
+    };
+
+    function renderOS() {
+      const grid = document.getElementById('ts-os-grid');
+      const items = Storage.osLinks.list().filter(o => o.active);
+      if (items.length === 0) {
+        grid.innerHTML = `<div class="col-span-full glass-panel p-12 rounded-2xl text-center border border-white/8"><p class="text-zinc-500">No active OS images.</p></div>`;
+        return;
+      }
+      grid.innerHTML = items.map(os => {
+        const s = LABEL_STYLES[os.labelType] || LABEL_STYLES.stable;
+        const compat = Number(os.compatibility) || 0;
+        const compatColor = os.labelType === 'legacy' ? 'text-amber-400' : 'text-cyan-400';
+        const barColor = os.labelType === 'legacy' ? 'bg-amber-400' : 'bg-cyan-400';
+        const steps = (os.steps || []).length;
+        return `
+          <div class="os-card-3d glass-panel p-6 rounded-2xl border ${s.border} cursor-pointer group" onclick="window.location.href='osguide.html?id=${encodeURIComponent(os.id)}'">
+            <div class="flex justify-between items-start mb-6">
+              <div class="w-11 h-11 flex items-center justify-center rounded-xl bg-zinc-900 border border-white/10">
+                <span class="material-symbols-outlined text-zinc-200" style="font-size:24px">${s.icon}</span>
+              </div>
+              <div class="${s.pill}">
+                <span class="w-1.5 h-1.5 rounded-full ${s.dot}"></span>
+                ${escHtml(os.label)}
+              </div>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">${escHtml(os.name)}</h3>
+            <p class="text-zinc-500 text-sm mb-5 leading-relaxed line-clamp-2">${escHtml(os.description)}</p>
+            <div class="space-y-2 mb-5">
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-zinc-400">Compatibility</span>
+                <span class="${compatColor} font-bold text-[11px]">${escHtml(os.compatibilityLabel)}</span>
+              </div>
+              <div class="h-1 bg-zinc-800 rounded-full overflow-hidden">
+                <div class="h-full ${barColor} rounded-full transition-all" style="width:${compat}%"></div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1.5 text-[10px] text-zinc-500">
+                <span class="material-symbols-outlined" style="font-size:14px">format_list_numbered</span>
+                ${steps} installation step${steps !== 1 ? 's' : ''}
+              </div>
+              <span class="text-cyan-400 text-xs font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                View Guide <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    Storage.ready.then(renderOS);
+    Storage.subscribe('osLinks', renderOS);
+
+    document.querySelectorAll('.ts-check-item').forEach(item => {
+      const input = item.querySelector('.ts-check-input');
+      const icon = item.querySelector('.ts-check-icon');
+      input.addEventListener('change', () => {
+        if (input.checked) {
+          icon.textContent = 'check_circle';
+          icon.classList.remove('text-zinc-600');
+          icon.classList.add('text-cyan-400');
+        } else {
+          icon.textContent = 'radio_button_unchecked';
+          icon.classList.add('text-zinc-600');
+          icon.classList.remove('text-cyan-400');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

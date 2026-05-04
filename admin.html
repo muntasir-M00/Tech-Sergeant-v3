@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>TechSarge | Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="js/tailwind-config.js"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="text-zinc-100 bg-[#0f0f11] min-h-screen" style="font-family:'Inter',system-ui,sans-serif">
+
+  <!-- TopNavBar -->
+  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 md:px-8 h-16 bg-[#0f0f11]/90 backdrop-blur-xl border-b border-white/8">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <div class="relative flex items-center justify-center w-9 h-9 bg-white/5 rounded-lg border border-white/10">
+        <span class="text-xl font-black tracking-tighter monogram-t">T</span>
+        <span class="text-xl font-black tracking-tighter monogram-s" style="margin-left:-3px">S<div class="monogram-glow"></div></span>
+      </div>
+      <span class="text-lg font-extrabold tracking-tight">
+        <span class="text-white">Tech</span>
+        <span class="text-cyan-400">Sargeant</span>
+      </span>
+    </a>
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 px-3 py-1.5 bg-cyan-400/8 border border-cyan-400/20 rounded-lg">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+        <span class="text-xs font-bold text-cyan-400 uppercase tracking-widest">Admin Mode</span>
+      </div>
+      <button onclick="Auth.logout();window.location.href='index.html'" class="px-4 py-2 text-xs font-bold text-zinc-400 hover:text-red-400 border border-white/10 rounded-lg hover:border-red-400/30 transition-all flex items-center gap-2">
+        <span class="material-symbols-outlined" style="font-size:16px">logout</span>
+        Log Out
+      </button>
+      <button id="ts-menu-toggle" class="ts-menu-toggle" title="Menu">
+        <span class="material-symbols-outlined" style="font-size:20px">menu</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="ts-main px-4 md:px-8 pb-16 min-h-screen">
+    <div class="max-w-screen-xl mx-auto">
+
+      <!-- Page Title -->
+      <div class="mb-8">
+        <p class="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-2">Restricted Area</p>
+        <h1 class="text-3xl font-extrabold text-white tracking-tight">Admin Panel</h1>
+        <p class="text-zinc-500 text-sm mt-1">Manage content, analytics, and system settings.</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="ts-admin-tabs">
+        <button class="ts-admin-tab active" data-target="tab-analytics">
+          <span class="material-symbols-outlined" style="font-size:16px">monitoring</span> Analytics
+        </button>
+        <button class="ts-admin-tab" data-target="tab-videos">
+          <span class="material-symbols-outlined" style="font-size:16px">video_library</span> Videos
+        </button>
+        <button class="ts-admin-tab" data-target="tab-os">
+          <span class="material-symbols-outlined" style="font-size:16px">terminal</span> OS Center
+        </button>
+        <button class="ts-admin-tab" data-target="tab-products">
+          <span class="material-symbols-outlined" style="font-size:16px">storefront</span> Products
+        </button>
+      </div>
+
+      <!-- ── TAB: Analytics ── -->
+      <section class="ts-admin-section active" id="tab-analytics">
+
+        <!-- Stats Row -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div class="glass-panel p-5 rounded-xl border border-white/8">
+            <p class="text-[10px] text-zinc-500 uppercase tracking-widest mb-2">Total Videos</p>
+            <p class="text-3xl font-bold text-white" id="stat-videos">—</p>
+          </div>
+          <div class="glass-panel p-5 rounded-xl border border-white/8">
+            <p class="text-[10px] text-zinc-500 uppercase tracking-widest mb-2">Total Views</p>
+            <p class="text-3xl font-bold text-white" id="stat-views">—</p>
+          </div>
+          <div class="glass-panel p-5 rounded-xl border border-white/8">
+            <p class="text-[10px] text-zinc-500 uppercase tracking-widest mb-2">OS Images</p>
+            <p class="text-3xl font-bold text-white" id="stat-os">—</p>
+          </div>
+          <div class="glass-panel p-5 rounded-xl border border-white/8">
+            <p class="text-[10px] text-zinc-500 uppercase tracking-widest mb-2">Products</p>
+            <p class="text-3xl font-bold text-white" id="stat-products">—</p>
+          </div>
+        </div>
+
+        <!-- Top Videos Table -->
+        <div class="glass-panel rounded-2xl overflow-hidden border border-white/8 mb-8">
+          <div class="flex items-center justify-between p-5 border-b border-white/8">
+            <h2 class="font-bold text-white text-base">Top Videos by Views</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead><tr class="border-b border-white/8">
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Title</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Views</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Likes</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Comments</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Status</th>
+              </tr></thead>
+              <tbody id="analytics-table">
+                <tr><td colspan="5" class="px-5 py-8 text-center text-zinc-500 text-xs">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Change Credentials -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl">
+          <div class="glass-panel rounded-2xl p-7 border border-cyan-500/10">
+            <h3 class="font-bold text-white mb-1">Change Admin Credentials</h3>
+            <p class="text-zinc-500 text-sm mb-5">Update your username and email for login.</p>
+            <div class="mb-3">
+              <label class="ts-form-label">Username</label>
+              <input type="text" id="admin-new-user" placeholder="New username" class="ts-form-input" />
+            </div>
+            <div class="mb-5">
+              <label class="ts-form-label">Email (optional)</label>
+              <input type="email" id="admin-new-email" placeholder="admin@example.com" class="ts-form-input" />
+            </div>
+            <button onclick="handleChangeUser()" class="px-5 py-2.5 bg-cyan-400 text-zinc-950 text-sm font-bold rounded-lg hover:bg-cyan-300 transition-colors">Update Credentials</button>
+          </div>
+          <div class="glass-panel rounded-2xl p-7 border border-red-500/10">
+            <h3 class="font-bold text-white mb-1">Change Admin Password</h3>
+            <p class="text-zinc-500 text-sm mb-5">Updates the password for the login modal.</p>
+            <input type="password" id="admin-new-pw" placeholder="New password" class="ts-form-input mb-3" />
+            <input type="password" id="admin-confirm-pw" placeholder="Confirm new password" class="ts-form-input mb-4" />
+            <button onclick="handleChangePw()" class="px-5 py-2.5 bg-cyan-400 text-zinc-950 text-sm font-bold rounded-lg hover:bg-cyan-300 transition-colors">Update Password</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB: Videos ── -->
+      <section class="ts-admin-section hidden" id="tab-videos">
+
+        <!-- Download from Platform URL -->
+        <div class="glass-panel rounded-2xl p-7 border border-indigo-500/20 mb-8 max-w-2xl">
+          <h2 class="font-bold text-white text-base mb-2 flex items-center gap-2">
+            <span class="material-symbols-outlined text-indigo-400" style="font-size:20px">cloud_download</span>
+            Import Video from YouTube / Platform
+          </h2>
+          <p class="text-zinc-500 text-sm mb-5">Paste a YouTube or other platform link — the video will be downloaded and hosted locally. Users will watch it directly here without visiting YouTube.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div class="md:col-span-2">
+              <label class="ts-form-label">Platform URL (YouTube, Vimeo, etc.)</label>
+              <input type="url" id="dl-url" placeholder="https://youtube.com/watch?v=..." class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Title</label>
+              <input type="text" id="dl-title" placeholder="Video title" class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Thumbnail URL (optional)</label>
+              <input type="url" id="dl-thumb" placeholder="https://..." class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Description</label>
+              <textarea id="dl-desc" rows="2" placeholder="Brief description..." class="ts-form-input resize-none"></textarea>
+            </div>
+            <div>
+              <label class="ts-form-label">Tags (comma separated)</label>
+              <input type="text" id="dl-tags" placeholder="Tutorial, Repair" class="ts-form-input" />
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <button id="dl-btn" onclick="downloadAndAddVideo()" class="px-5 py-2.5 bg-indigo-500 text-white text-sm font-bold rounded-lg hover:bg-indigo-400 transition-colors flex items-center gap-2">
+              <span class="material-symbols-outlined" style="font-size:16px">download</span>
+              Download &amp; Host Locally
+            </button>
+            <div id="dl-status" class="hidden flex items-center gap-2 text-sm">
+              <div class="w-4 h-4 border-2 border-indigo-400/30 border-t-indigo-400 rounded-full animate-spin"></div>
+              <span class="text-zinc-400" id="dl-status-text">Downloading...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Video Form (manual) -->
+        <div class="glass-panel rounded-2xl p-7 border border-white/8 mb-8 max-w-2xl">
+          <h2 class="font-bold text-white text-base mb-2 flex items-center gap-2">
+            <span class="material-symbols-outlined text-cyan-400" style="font-size:20px">add_circle</span>
+            Add Video Manually
+          </h2>
+          <p class="text-zinc-500 text-sm mb-5">Add a video using an external embed link (YouTube, Vimeo, or direct video URL). The video will stream from that platform.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="ts-form-label">Title</label>
+              <input type="text" id="vid-title" placeholder="Video title" class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">YouTube / Video URL</label>
+              <input type="url" id="vid-url" placeholder="https://youtube.com/watch?v=..." class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Thumbnail URL</label>
+              <input type="url" id="vid-thumb" placeholder="https://..." class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Duration (e.g. 18:42)</label>
+              <input type="text" id="vid-duration" placeholder="00:00" class="ts-form-input" />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="ts-form-label">Description</label>
+            <textarea id="vid-desc" rows="3" placeholder="Brief description..." class="ts-form-input resize-none"></textarea>
+          </div>
+          <div class="mb-5">
+            <label class="ts-form-label">Tags (comma separated)</label>
+            <input type="text" id="vid-tags" placeholder="Logic, Tier-1, Expert" class="ts-form-input" />
+          </div>
+          <button onclick="addVideo()" class="px-5 py-2.5 bg-cyan-400 text-zinc-950 text-sm font-bold rounded-lg hover:bg-cyan-300 transition-colors">Add Video</button>
+        </div>
+
+        <!-- Videos Table -->
+        <div class="glass-panel rounded-2xl overflow-hidden border border-white/8">
+          <div class="p-5 border-b border-white/8">
+            <h2 class="font-bold text-white text-base">All Videos</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead><tr class="border-b border-white/8">
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Title</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Views</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Likes</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Status</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Actions</th>
+              </tr></thead>
+              <tbody id="admin-videos-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB: OS Center ── -->
+      <section class="ts-admin-section hidden" id="tab-os">
+
+        <!-- Add OS Form -->
+        <div class="glass-panel rounded-2xl p-7 border border-white/8 mb-8 max-w-2xl">
+          <h2 class="font-bold text-white text-base mb-5 flex items-center gap-2">
+            <span class="material-symbols-outlined text-cyan-400" style="font-size:20px">add_circle</span>
+            Add OS Image
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="ts-form-label">OS Name</label>
+              <input type="text" id="os-name" placeholder="OS Name" class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Label (e.g. STABLE)</label>
+              <input type="text" id="os-label" placeholder="STABLE / BETA / LEGACY" class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Label Type</label>
+              <select id="os-labeltype" class="ts-form-input">
+                <option value="stable">Stable (Cyan)</option>
+                <option value="beta">Beta (Cyan)</option>
+                <option value="legacy">Legacy (Amber)</option>
+              </select>
+            </div>
+            <div>
+              <label class="ts-form-label">Compatibility %</label>
+              <input type="number" id="os-compat" placeholder="0-100" min="0" max="100" class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Compat. Label Text</label>
+              <input type="text" id="os-compatLabel" placeholder="100% OPTIMIZED" class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Download URL</label>
+              <input type="url" id="os-url" placeholder="https://..." class="ts-form-input" />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="ts-form-label">Description</label>
+            <textarea id="os-desc" rows="2" class="ts-form-input resize-none" placeholder="Short description..."></textarea>
+          </div>
+          <div class="mb-4">
+            <label class="ts-form-label">Guide Video URL (YouTube or direct)</label>
+            <input type="url" id="os-video" placeholder="https://youtube.com/watch?v=..." class="ts-form-input" />
+          </div>
+
+          <!-- OS Banner Image -->
+          <div class="mb-4 p-4 bg-white/2 rounded-xl border border-white/6">
+            <p class="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+              <span class="material-symbols-outlined" style="font-size:14px">image</span>
+              OS Banner / Cover Image
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label class="ts-form-label">Upload Image File</label>
+                <input type="file" accept="image/*" id="os-img-file" class="ts-form-input" />
+              </div>
+              <div>
+                <label class="ts-form-label">— or — Image URL</label>
+                <input type="url" id="os-img-url" placeholder="https://..." class="ts-form-input" />
+              </div>
+            </div>
+            <!-- preview -->
+            <div id="os-img-preview-wrap" class="hidden mt-3">
+              <img id="os-img-preview" src="" alt="Preview" class="w-full max-h-40 object-cover rounded-lg border border-white/10" />
+            </div>
+          </div>
+
+          <!-- Warning Box -->
+          <div class="mb-5 p-4 bg-amber-400/5 rounded-xl border border-amber-400/20">
+            <p class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+              <span class="material-symbols-outlined" style="font-size:14px">warning</span>
+              User Warning Message
+            </p>
+            <div class="mb-3">
+              <label class="ts-form-label">Warning Title</label>
+              <input type="text" id="os-warn-title" placeholder="e.g. Read Before Proceeding" class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Warning Text (shown prominently to users on the guide page)</label>
+              <textarea id="os-warn-text" rows="3" class="ts-form-input resize-none" placeholder="e.g. This process will wipe all data on your drive. Back up important files before starting."></textarea>
+            </div>
+          </div>
+
+          <button onclick="addOS()" class="px-5 py-2.5 bg-cyan-400 text-zinc-950 text-sm font-bold rounded-lg hover:bg-cyan-300 transition-colors">Add OS Image</button>
+        </div>
+
+        <!-- OS Table -->
+        <div class="glass-panel rounded-2xl overflow-hidden border border-white/8">
+          <div class="p-5 border-b border-white/8">
+            <h2 class="font-bold text-white text-base">All OS Images</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead><tr class="border-b border-white/8">
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Name</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Label</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Steps</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Status</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Actions</th>
+              </tr></thead>
+              <tbody id="admin-os-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB: Products ── -->
+      <section class="ts-admin-section hidden" id="tab-products">
+
+        <!-- Add Product Form -->
+        <div class="glass-panel rounded-2xl p-7 border border-white/8 mb-8 max-w-2xl">
+          <h2 class="font-bold text-white text-base mb-5 flex items-center gap-2">
+            <span class="material-symbols-outlined text-cyan-400" style="font-size:20px">add_circle</span>
+            Add New Product
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="ts-form-label">Product Name</label>
+              <input type="text" id="prod-name" placeholder="Name" class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Tier Label</label>
+              <input type="text" id="prod-tier" placeholder="Hardware Tier 1" class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Price</label>
+              <input type="text" id="prod-price" placeholder="$0.00" class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Commission %</label>
+              <input type="text" id="prod-commission" placeholder="10%" class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Amazon URL</label>
+              <input type="url" id="prod-amazon" placeholder="https://amazon.com/dp/..." class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">Daraz URL</label>
+              <input type="url" id="prod-daraz" placeholder="https://daraz.com/..." class="ts-form-input" />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="ts-form-label">Description</label>
+            <textarea id="prod-desc" rows="2" class="ts-form-input resize-none" placeholder="Short description..."></textarea>
+          </div>
+          <div class="mb-4">
+            <label class="ts-form-label">Product Image — Upload File</label>
+            <input type="file" accept="image/*" id="prod-img-file" class="ts-form-input" />
+          </div>
+          <div class="mb-5">
+            <label class="ts-form-label">— or — Image URL</label>
+            <input type="url" id="prod-img-url" placeholder="https://..." class="ts-form-input" />
+          </div>
+          <label class="flex items-center gap-2 mb-5 cursor-pointer">
+            <input type="checkbox" id="prod-certified" class="w-4 h-4 accent-cyan-400 rounded" />
+            <span class="text-sm text-zinc-300 font-medium">TechSarge Certified</span>
+          </label>
+          <button onclick="addProduct()" class="px-5 py-2.5 bg-cyan-400 text-zinc-950 text-sm font-bold rounded-lg hover:bg-cyan-300 transition-colors">Add Product</button>
+        </div>
+
+        <!-- Products Table -->
+        <div class="glass-panel rounded-2xl overflow-hidden border border-white/8">
+          <div class="p-5 border-b border-white/8">
+            <h2 class="font-bold text-white text-base">All Products</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead><tr class="border-b border-white/8">
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Product</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Price</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Commission</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Certified</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Status</th>
+                <th class="text-left px-5 py-3 text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Actions</th>
+              </tr></thead>
+              <tbody id="admin-products-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- OS Steps Modal -->
+  <div id="ts-steps-modal-backdrop" class="ts-modal-backdrop" style="z-index:160">
+    <div class="ts-modal" style="max-width:640px;max-height:92vh;overflow-y:auto">
+      <h3 id="ts-steps-modal-title">Manage Installation Steps</h3>
+
+      <!-- Current Steps List -->
+      <div id="ts-steps-list" class="space-y-3 mb-5 max-h-60 overflow-y-auto custom-scrollbar"></div>
+
+      <!-- Tab Switcher -->
+      <div class="flex gap-2 mb-4">
+        <button id="steps-tab-single" onclick="switchStepsTab('single')"
+          class="flex-1 py-2 px-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all bg-cyan-400/10 border border-cyan-400/30 text-cyan-400">
+          <span class="material-symbols-outlined align-middle mr-1" style="font-size:14px">add_circle</span>
+          Add Single Step
+        </button>
+        <button id="steps-tab-bulk" onclick="switchStepsTab('bulk')"
+          class="flex-1 py-2 px-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all bg-white/3 border border-white/8 text-zinc-400 hover:text-white hover:border-white/15">
+          <span class="material-symbols-outlined align-middle mr-1" style="font-size:14px">format_list_bulleted</span>
+          Bulk Import All Steps
+        </button>
+      </div>
+
+      <!-- SINGLE STEP PANEL -->
+      <div id="steps-panel-single" class="glass-panel p-5 rounded-xl border border-white/8 mb-2">
+        <div class="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <label class="ts-form-label">Step Title</label>
+            <input type="text" id="step-title" placeholder="e.g. Flash USB Drive" class="ts-form-input" />
+          </div>
+          <div>
+            <label class="ts-form-label">Media Type</label>
+            <select id="step-type" class="ts-form-input" onchange="toggleStepMediaInput()">
+              <option value="text">Text only</option>
+              <option value="image">Image</option>
+              <option value="video">Video (YouTube / URL)</option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="ts-form-label">Instructions / Description</label>
+          <textarea id="step-text" rows="3" placeholder="Explain what the user needs to do in this step..." class="ts-form-input resize-none"></textarea>
+        </div>
+        <!-- Image inputs -->
+        <div id="step-img-inputs" class="hidden mb-3">
+          <div class="p-3 bg-white/2 rounded-lg border border-white/6 space-y-3">
+            <div>
+              <label class="ts-form-label">Upload Step Image</label>
+              <input type="file" accept="image/*" id="step-img-file" class="ts-form-input" />
+            </div>
+            <div>
+              <label class="ts-form-label">— or — Image URL</label>
+              <input type="url" id="step-media" placeholder="https://example.com/screenshot.jpg" class="ts-form-input" />
+            </div>
+            <div id="step-img-preview-wrap" class="hidden">
+              <img id="step-img-preview" src="" alt="Preview" class="w-full max-h-32 object-cover rounded-lg border border-white/10" />
+            </div>
+          </div>
+        </div>
+        <!-- Video input -->
+        <div id="step-video-inputs" class="hidden mb-3">
+          <label class="ts-form-label">YouTube / Video URL</label>
+          <input type="url" id="step-media-video" placeholder="https://youtube.com/watch?v=..." class="ts-form-input" />
+        </div>
+        <!-- Per-step warning -->
+        <div class="mt-3 p-3 bg-amber-400/4 border border-amber-400/15 rounded-lg">
+          <label class="ts-form-label" style="color:#fbbf24">Step Warning (optional)</label>
+          <input type="text" id="step-warning" placeholder="e.g. Do not skip — this step is critical" class="ts-form-input" />
+        </div>
+        <div class="mt-4 flex justify-end">
+          <button onclick="adminAddStep()" class="px-5 py-2.5 bg-cyan-400 text-zinc-950 text-sm font-bold rounded-lg hover:bg-cyan-300 transition-colors">Add Step</button>
+        </div>
+      </div>
+
+      <!-- BULK IMPORT PANEL -->
+      <div id="steps-panel-bulk" class="hidden glass-panel p-5 rounded-xl border border-white/8 mb-2">
+        <div class="mb-3">
+          <div class="flex items-start justify-between mb-2 gap-3">
+            <div>
+              <label class="ts-form-label">Paste All Steps at Once</label>
+              <p class="text-[11px] text-zinc-500 mt-0.5">
+                Write each step starting with <span class="text-cyan-400 font-bold font-mono">Step N:</span> or <span class="text-cyan-400 font-bold font-mono">Step N.</span> (e.g. <em>Step 1: Back Up Your Data</em>). 
+                Everything below that line until the next step becomes the step description.
+              </p>
+            </div>
+          </div>
+          <textarea id="bulk-steps-input" rows="10" oninput="previewBulkSteps()" class="ts-form-input resize-y font-mono text-sm" style="min-height:180px" placeholder="Step 1: Back Up Your Data
+Before installing, create a full backup of your files using Windows Backup or an external tool.
+
+Step 2: Download the ISO
+Visit the OS Center and download the ISO file for your system model.
+
+Step 3: Flash to USB
+Use Rufus or Balena Etcher to write the ISO to a USB drive (at least 8GB).
+
+Step 4: Boot and Install
+Restart your computer, enter the BIOS and select your USB as the boot device."></textarea>
+        </div>
+
+        <!-- Live Preview -->
+        <div id="bulk-preview-wrap" class="hidden mb-4">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined text-cyan-400" style="font-size:15px">visibility</span>
+            <p class="text-[11px] font-bold text-zinc-400 uppercase tracking-widest">Parsed Preview</p>
+            <span id="bulk-preview-count" class="ml-auto px-2 py-0.5 bg-cyan-400/10 border border-cyan-400/20 rounded text-[10px] font-bold text-cyan-400"></span>
+          </div>
+          <div id="bulk-preview-list" class="space-y-2 max-h-56 overflow-y-auto custom-scrollbar"></div>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between gap-3">
+          <p id="bulk-status" class="text-xs text-zinc-500 italic"></p>
+          <button onclick="importBulkSteps()" class="px-5 py-2.5 bg-cyan-400 text-zinc-950 text-sm font-bold rounded-lg hover:bg-cyan-300 transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined" style="font-size:16px">upload</span>
+            Import All Steps
+          </button>
+        </div>
+      </div>
+
+      <div class="ts-modal-actions">
+        <button class="secondary" onclick="document.getElementById('ts-steps-modal-backdrop').classList.remove('show')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
